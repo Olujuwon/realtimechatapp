@@ -1,26 +1,48 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {useEffect, useState} from 'react';
 import './App.css';
+import {HelmetProvider, Helmet} from "react-helmet-async";
+import {useAppDispatch, useAppSelector} from "./hooks/reduxHooks";
+import {fetchSignedInUser, registerNewTestUsers, selectUser} from "./redux/userSlice";
+import {useCreateTestContactsMutation} from "./redux/appQueryV1";
+import {useRoutes} from "react-router-dom";
+import routes from "./routes";
+import {addTestMessagesToFirebase} from "./redux/messageSlice";
 
+
+/*
+* TODO
+*  fetch user here and use to route
+* */
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const content = useRoutes(routes);
+    const dispatch = useAppDispatch();
+    const [signedinUser, setSignedinUser] = useState(useAppSelector(selectUser));
+    const [createTestContacts] = useCreateTestContactsMutation();
+
+    useEffect(() => {
+        //createTestData();
+        if (Object.keys(signedinUser).length === 0) {
+            dispatch(fetchSignedInUser());
+        }
+    }, [signedinUser])
+
+    const createTestData = () => {
+        //dispatch(registerNewTestUsers());
+        // @ts-ignore
+        //createTestContacts();
+        dispatch(addTestMessagesToFirebase());
+    }
+    return (
+        <HelmetProvider>
+            <Helmet
+                titleTemplate="%s | Messaging App"
+                defaultTitle="Messaging App"
+            />
+            <div className="App">
+                {content}
+            </div>
+        </HelmetProvider>
+    );
 }
 
 export default App;
