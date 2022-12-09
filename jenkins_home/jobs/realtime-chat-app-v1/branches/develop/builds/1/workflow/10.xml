@@ -1,0 +1,30 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<Tag plugin="workflow-support@839.v35e2736cfd5c">
+  <node class="cps.n.StepStartNode" plugin="workflow-cps@3565.v4b_d9b_8c29a_b_3">
+    <parentIds>
+      <string>9</string>
+    </parentIds>
+    <id>10</id>
+    <descriptorId>org.jenkinsci.plugins.workflow.steps.EnvStep</descriptorId>
+  </node>
+  <actions>
+    <s.a.LogStorageAction/>
+    <cps.a.ArgumentsActionImpl plugin="workflow-cps@3565.v4b_d9b_8c29a_b_3">
+      <arguments>
+        <entry>
+          <string>overrides</string>
+          <list>
+            <string>GIT_BRANCH=origin/develop</string>
+            <string>GIT_COMMIT=6aba79520f7464842eeb31cf98230edea958be1b</string>
+            <string>GIT_URL=https://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@github.com/Olujuwon/realtimechatapp.git</string>
+          </list>
+        </entry>
+      </arguments>
+      <sensitiveVariables/>
+      <isUnmodifiedBySanitization>true</isUnmodifiedBySanitization>
+    </cps.a.ArgumentsActionImpl>
+    <wf.a.TimingAction plugin="workflow-api@1200.v8005c684b_a_c6">
+      <startTime>1670596299412</startTime>
+    </wf.a.TimingAction>
+  </actions>
+</Tag>
