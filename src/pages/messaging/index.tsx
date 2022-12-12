@@ -1,22 +1,26 @@
 import React from 'react';
-import {MessagesSection, ContactsSection, NavigationSection, Wrapper} from "./Messaging.Styles";
-import NavbarVertical from "../../components/NavigationVertical";
 import MessageComponent from "../../components/MessageComponent";
 import Contacts from "../../components/Contacts";
+import {
+    Card,
+    Col,
+    Row,
+} from "react-bootstrap";
 
 function Messaging() {
     return (
-        <Wrapper>
-            <NavigationSection>
-                <NavbarVertical/>
-            </NavigationSection>
-            <ContactsSection>
-                <Contacts/>
-            </ContactsSection>
-            <MessagesSection>
-                <MessageComponent/>
-            </MessagesSection>
-        </Wrapper>
+        <React.Fragment>
+            <Card>
+                <Row className="g-0">
+                    <Col lg={5} xl={3} className="border-end">
+                        <Contacts/>
+                    </Col>
+                    <Col Col lg={7} xl={9}>
+                        <MessageComponent/>
+                    </Col>
+                </Row>
+            </Card>
+        </React.Fragment>
     );
 }
 

@@ -1,7 +1,7 @@
 pipeline {
     agent any
     options {
-        buildDiscarder(logRotator(numToKeepStr: '5'))
+
       }
       environment {
         IMAGE_NAME = 'olujuwon/real-time-chat-app'

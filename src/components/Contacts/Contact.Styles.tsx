@@ -9,11 +9,18 @@ export const ContactsSectionHeaderContainer = styled.div`
   
 `;
 
+export const ContactsContainer = styled.div`
+    width: 100%;
+    margin: 0 auto;
+    background: #DAD7CD
+`;
+
 export const ContactsSectionHeaderStyledTitle = styled(Title)`
     font-weight: 800;
     color: white !important;
     margin: 0 0 1rem 0 !important;
 `;
+
 
 export const ContactsSectionHeaderStyledSearch = styled(Search)`
     width: 80%;
@@ -29,6 +36,7 @@ export const ContactsSectionHeaderStyledListItem = styled(List.Item)`
 export const ComponentListExtraWrapper = styled.div`
   display: grid;
   grid-template-rows: auto auto;
+  grid-gap: none;
 `;
 
 

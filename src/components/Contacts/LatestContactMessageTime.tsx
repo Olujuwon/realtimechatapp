@@ -36,7 +36,7 @@ const LatestContactMessageTime = ({contactUid})=>{
             return moment(contactMessageData).format("LT");
         }
     }
-    return<Text>{getContactLastMessageTime()}</Text>
+    return<Text style={{fontSize:8, fontWeight:700, alignSelf: "end"}}>{getContactLastMessageTime()}</Text>
 };
 
 export default LatestContactMessageTime;

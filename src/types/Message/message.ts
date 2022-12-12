@@ -1,8 +1,8 @@
 export interface messageType {
-    data: String,
-    timeStamp: Object,
-    uid: String,
-    status: String,
-    sender: [String],
-    receiver: [String]
+    data: string,
+    timeStamp: any,
+    uid: string,
+    status: string,
+    sender: [string],
+    receiver: [string]
 }

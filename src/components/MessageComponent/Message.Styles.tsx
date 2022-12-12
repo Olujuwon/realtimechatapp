@@ -9,7 +9,7 @@ const {Title, Text} = Typography;
 export const ComponentHeaderWrapper = styled.div`
   height: 6.5rem;
   width: 100%;
-  background-color: darkgrey;
+  background-color: transparent;
   margin: 0.2rem 0 0 0;
   display: grid;
   grid-template-columns: 15% auto;
@@ -42,8 +42,10 @@ export const StyledOnlineIcon = styled(CheckCircleFilled)`
 
 // Body Styles
 export const MessageBodyWrapper = styled.div`
-  max-height: 75vh;
+  
   overflow: scroll;
+  background: transparent;
+  padding: 0 1.5rem 0 1.5rem;
 `;
 
 export const EmptyDiv = styled.div`

@@ -42,8 +42,13 @@ const NewMessageAlert = ({contactUid}) => {
     return (
         <>
             {unreadMessages > 0 ? <Avatar shape="circle"
-                                          style={{backgroundColor: "white", verticalAlign: 'middle', color: "black"}}
-                                          size={15}>{unreadMessages}</Avatar> : null}
+                                          style={{
+                                              backgroundColor: "white",
+                                              verticalAlign: 'middle',
+                                              color: "black",
+                                              fontWeight: 700,
+                                          }}
+                                          size={13}>{unreadMessages}</Avatar> : null}
         </>
     );
 };

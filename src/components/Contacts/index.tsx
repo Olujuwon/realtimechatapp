@@ -3,7 +3,7 @@ import {List, Avatar, Modal, Skeleton} from "antd";
 import {contactType} from "../../types/Contact/contact";
 import {useAppDispatch} from "../../hooks/reduxHooks";
 import {
-    ComponentListExtraWrapper,
+    ComponentListExtraWrapper, ContactsContainer,
     ContactsSectionHeaderContainer,
     ContactsSectionHeaderStyledListItem,
     ContactsSectionHeaderStyledSearch,
@@ -69,13 +69,16 @@ const Contacts: React.FC = (): JSX.Element => {
     }
 
     return (
-        <>
+        <ContactsContainer>
             <ContactsSectionHeaderContainer>
                 <ContactsSectionHeaderStyledTitle>Messages</ContactsSectionHeaderStyledTitle>
                 <ContactsSectionHeaderStyledSearch size="large" placeholder="Search Contacts"/>
                 <StyledAddNewText className="addContact" onClick={() => showModal()}><PlusCircleFilled/> Add new contact</StyledAddNewText>
             </ContactsSectionHeaderContainer>
             <List
+                style={{
+                    padding: "1rem"
+                }}
                 itemLayout="vertical"
                 dataSource={isLoading ? [] : data}
                 renderItem={(contact: contactType, index: number) => {
@@ -96,7 +99,7 @@ const Contacts: React.FC = (): JSX.Element => {
             <Modal visible={isModalOpen} onCancel={closeModal} footer={null} centered={true} destroyOnClose={true}>
                 <AddNewContact onFinish={_handleAddContactClick} success={isCreateNewContactSuccess}/>
             </Modal>
-        </>
+        </ContactsContainer>
     );
 }
 

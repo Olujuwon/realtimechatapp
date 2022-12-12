@@ -1,7 +1,7 @@
 import React from 'react';
 import {
     ComponentHeaderWrapper, StyledAvatar, StyledTitle,
-    StyledTextII, HeaderTitleContainer, StyledOnlineIcon
+    StyledTextII, HeaderTitleContainer, StyledOnlineIcon,EmptyDiv
 } from "./Message.Styles";
 import {contactType} from "../../types/Contact/contact";
 import {MinusCircleOutlined} from "@ant-design/icons";

@@ -21,7 +21,7 @@ function NavbarVertical() {
                 <CalendarItem/>
                 <ContactsItem/>
             </MainNavSectionWrapper>
-            <div>footer</div>
+            <div></div>
         </Wrapper>
     );
 }

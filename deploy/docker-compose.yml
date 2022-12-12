@@ -2,21 +2,38 @@ version: '3'
 
 services:
 
+  docker-in-docker:
+    image: docker:dind
+    privileged: true
+    expose:
+      - 2375
+      - 2376
+    networks:
+      - jenkins
+
   jenkins:
-    build: ..
+    build: ./
     container_name: jenkins
     privileged: true
+    user: root
     restart: always
     ports:
       - 8080:8080
     volumes:
       - ./jenkins_home:/var/jenkins_home
-      - /var/run/docker.sock:/var/run/docker.sock
       - /usr/local/bin/docker:/usr/bin/docker
+    networks:
+      - jenkins
 
   registry:
     image: registry
+    build: ./
     container_name: registry
     restart: always
+    networks:
+      - jenkins
     ports:
       - 5000:5000
+networks:
+  jenkins:
+
