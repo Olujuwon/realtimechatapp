@@ -8,17 +8,13 @@ pipeline {
               IMAGE_NAME = 'olujuwon/real-time-chat-app'
               IMAGE_TAG = 'latest'
               APP_NAME = 'real-time-chat-app'
-              dockerVersion = ''
             }
     stages {
         stage('Environment info') {
             steps {
                sh 'git --version'
-               echo "Branch: ${env.APP_NAME}"
-               script {
-               dockerVersion = docker.version
-               }
-               echo "Docker Version: ${env.dockerVersion}"
+               echo "Branch: ${env.BRANCH_NAME}"
+               sh 'docker -v'
                sh 'printenv'
             }
             }
