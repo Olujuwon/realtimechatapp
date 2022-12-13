@@ -14,10 +14,7 @@ pipeline {
             steps {
                sh 'git --version'
                echo "Branch: ${env.BRANCH_NAME}"
-               script {
-                  dockerVersion = docker.version
-                  }
-               echo "Docker Version: ${env.dockerVersion}"
+               sh 'docker -v'
                sh 'printenv'
             }
             }
