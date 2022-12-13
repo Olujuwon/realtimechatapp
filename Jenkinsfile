@@ -23,7 +23,6 @@ pipeline {
                 echo "Building Docker image now ..."
                 sh 'docker build -t $IMAGE_NAME:$IMAGE_TAG  --no-cache .'
                 echo "Docker image built."
-                '''
             }
         }
         stage('Test:Image') {
@@ -31,7 +30,6 @@ pipeline {
                 echo "Testing docker image now ..."
                 sh 'docker run --rm $IMAGE_NAME'
                 echo "Docker images test completed successfully."
-                '''
                 echo 'Cleaning up docker test build now ...'
                 sh 'docker rmi $IMAGE_NAME'
                 echo "Testing successful."
