@@ -3,6 +3,7 @@ import {Avatar, Typography} from "antd";
 import {useGetContactsMessagesKeyValueQuery} from "../../redux/appQueryV1";
 import {messageType} from "../../types/Message/message";
 import {_sortMessagesArray} from "../MessageComponent/util";
+import {Badge} from "react-bootstrap";
 
 const {Text} = Typography;
 
@@ -41,14 +42,9 @@ const NewMessageAlert = ({contactUid}) => {
 
     return (
         <>
-            {unreadMessages > 0 ? <Avatar shape="circle"
-                                          style={{
-                                              backgroundColor: "white",
-                                              verticalAlign: 'middle',
-                                              color: "black",
-                                              fontWeight: 700,
-                                          }}
-                                          size={13}>{unreadMessages}</Avatar> : null}
+            {unreadMessages > 0 ? <Badge bg="success" className="float-end">
+                {unreadMessages}
+            </Badge> : null}
         </>
     );
 };

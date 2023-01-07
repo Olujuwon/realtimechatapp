@@ -74,6 +74,7 @@ export const StyledCommentReceiver = styled(Card)`
   align-self: flex-start;
   color: white;
   margin: 0.2rem;
+  border:none;
   border-top-left-radius: 0.2rem 0.2rem;
   border-top-right-radius: 0.2rem 0.2rem;
   border-bottom-left-radius: 0.2rem 0.2rem;
@@ -89,6 +90,7 @@ export const StyledCommentSender = styled(Card)`
   word-wrap: break-word;
   align-self: flex-end;
   color: white;
+  border:none;
   margin: 0.2rem;
   border-top-left-radius: 0.2rem 0.2rem;
   border-top-right-radius: 0.2rem 0.2rem;

@@ -6,6 +6,7 @@ import MessageComponentInput from "./MessageComponentInput";
 import {useAppDispatch, useAppSelector} from "../../hooks/reduxHooks";
 import {selectActiveContact} from "../../redux/contactSlice";
 import {useGetAllActiveContactMessageQuery} from "../../redux/appQueryV1";
+import {Row} from "react-bootstrap";
 
 
 const MessageComponent = (): JSX.Element => {
@@ -20,18 +21,18 @@ const MessageComponent = (): JSX.Element => {
     }, [activeContactValue])
 
     return (
-        <Wrapper>
+        <Row className="vh-100">
             {(Object.keys(activeContactValue)).length <= 0 ? null : <><MessageComponentHeader
                 activeContact={activeContactValue}/>
                 <MessageComponentBody activeContact={activeContactValue}/>
                 <MessageComponentInput/></>}
-        </Wrapper>
+        </Row>
     );
 }
 
 
 export const Wrapper = styled.div`
-  height: 90vh;
+ 
   width: auto;
   background:#DAD7CD;
   display: grid;

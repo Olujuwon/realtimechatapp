@@ -25,7 +25,7 @@ const MessageComponentBody: React.FC<componentProps> = ({activeContact}): JSX.El
     const preProcessedMessages = !data ? [] : _sortMessagesArray(data);
     // @ts-ignore
     return (
-        <MessageBodyWrapper>
+        <div>
             {
                 preProcessedMessages.length !== 0 ?
                     preProcessedMessages.map((message: messageType, index: number) => {
@@ -34,16 +34,17 @@ const MessageComponentBody: React.FC<componentProps> = ({activeContact}): JSX.El
                         const commentTypeValue = sender[0] === mainUserUid ? "from" : "to";
                         // @ts-ignore
                         return (
-                            <div key={index + "_container"}>
-                                <MessageContainer key={++index}>
+                            <div key={index + "_container"}
+                                 className="overflow-scroll transparent px-5 w-100 h-auto d-flex flex-column">
+                                <div key={++index} className="w-100 h-auto d-flex flex-column">
                                     <MessageBubble commentType={commentTypeValue} content={data}
                                                    key={--index} messagesTime={message.timeStamp} sender={sender[0]}/>
-                                </MessageContainer>
+                                </div>
                             </div>
                         );
                     }) : <EmptyDiv></EmptyDiv>
             }
-        </MessageBodyWrapper>
+        </div>
     );
 }
 

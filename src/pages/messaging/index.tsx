@@ -2,25 +2,21 @@ import React from 'react';
 import MessageComponent from "../../components/MessageComponent";
 import Contacts from "../../components/Contacts";
 import {
-    Card,
-    Col,
-    Row,
+     Container,
 } from "react-bootstrap";
 
 function Messaging() {
     return (
-        <React.Fragment>
-            <Card>
-                <Row className="g-0">
-                    <Col lg={5} xl={3} className="border-end">
-                        <Contacts/>
-                    </Col>
-                    <Col Col lg={7} xl={9}>
-                        <MessageComponent/>
-                    </Col>
-                </Row>
-            </Card>
-        </React.Fragment>
+        <div className="container-fluid p-0">
+            <div className="row">
+                <div className="col p-0">
+                    <Contacts/>
+                </div>
+                <div className="col-9 p-0">
+                    <MessageComponent/>
+                </div>
+            </div>
+        </div>
     );
 }
 
