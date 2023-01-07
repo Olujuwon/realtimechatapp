@@ -6,8 +6,8 @@ import {fetchSignedInUser, registerNewTestUsers, selectUser} from "./redux/userS
 import {useCreateTestContactsMutation} from "./redux/appQueryV1";
 import {useRoutes} from "react-router-dom";
 import routes from "./routes";
+import Messaging from "./pages/messaging";
 import {addTestMessagesToFirebase} from "./redux/messageSlice";
-
 
 /*
 * TODO
@@ -20,7 +20,7 @@ function App() {
     const [createTestContacts] = useCreateTestContactsMutation();
 
     useEffect(() => {
-        //createTestData();
+        createTestData();
         if (Object.keys(signedinUser).length === 0) {
             dispatch(fetchSignedInUser());
         }
@@ -30,16 +30,17 @@ function App() {
         //dispatch(registerNewTestUsers());
         // @ts-ignore
         //createTestContacts();
-        dispatch(addTestMessagesToFirebase());
+        //dispatch(addTestMessagesToFirebase());
     }
+
     return (
         <HelmetProvider>
             <Helmet
                 titleTemplate="%s | Messaging App"
                 defaultTitle="Messaging App"
             />
-            <div className="App">
-                {content}
+            <div className="container-fluid">
+                <Messaging />
             </div>
         </HelmetProvider>
     );

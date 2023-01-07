@@ -10,7 +10,7 @@ export function generateCustomMessageStatus() {
     return status[Math.floor(Math.random()*status.length)]
 }
 
-export function createRandomTOMessages(mainUserId: String, otherUserId: String, switchIds: boolean): messageType {
+export function createRandomTOMessages(mainUserId: string, otherUserId: string, switchIds: boolean): messageType {
     return {
         data: faker.lorem.paragraph(),
         timeStamp: (new Date(faker.date.recent(1))).valueOf(),
@@ -21,7 +21,7 @@ export function createRandomTOMessages(mainUserId: String, otherUserId: String, 
     };
 }
 
-export function createRandomFromMessages(mainUserId: String, otherUserId: String, switchIds: boolean): messageType {
+export function createRandomFromMessages(mainUserId: string, otherUserId: string, switchIds: boolean): messageType {
 
     return {
         data: faker.lorem.paragraph(),
@@ -29,7 +29,7 @@ export function createRandomFromMessages(mainUserId: String, otherUserId: String
         uid: faker.datatype.uuid(),
         status: faker.word.verb(8),
         sender: [switchIds ? mainUserId : otherUserId],
-        receiver:[switchIds ? otherUserId : mainUserId]
+        receiver:[         switchIds ? otherUserId : mainUserId]
     };
 }
 

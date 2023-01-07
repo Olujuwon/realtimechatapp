@@ -1,19 +1,17 @@
 import React from 'react';
-import {Typography} from "antd";
 import {useGetContactsMessagesKeyValueQuery} from "../../redux/appQueryV1";
 import {messageType} from "../../types/Message/message";
 import moment from "moment";
 import {_sortMessagesArray} from "../MessageComponent/util";
 
-const {Text}= Typography;
 
 // @ts-ignore
 const LatestContactMessageTime = ({contactUid})=>{
     // @ts-ignore
     const {data, error, isLoading} = useGetContactsMessagesKeyValueQuery();
 
-    if (isLoading) return <Text></Text>
-    if (error) return <Text></Text>
+    if (isLoading) return <h6></h6>
+    if (error) return <h6></h6>
     const sortMessagesArray = (messages: Array<messageType>) => {
         return messages.sort((a, b) => {
             if (a.timeStamp > b.timeStamp) {
@@ -36,7 +34,7 @@ const LatestContactMessageTime = ({contactUid})=>{
             return moment(contactMessageData).format("LT");
         }
     }
-    return<Text>{getContactLastMessageTime()}</Text>
+    return<h6 style={{fontSize:8, fontWeight:700, alignSelf: "end", marginRight: "5px"}}>{getContactLastMessageTime()}</h6>
 };
 
 export default LatestContactMessageTime;

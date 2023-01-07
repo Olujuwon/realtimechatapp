@@ -65,23 +65,28 @@ const MessageComponentInput = (): JSX.Element => {
                 <>
                     <InputContainer>
                         <StyledSmileOutlined/> {/*TODO: this will be a separate component for emojis*/}
-                        <div>
+                        <InputButtonContainer>
                             <StyledInput placeholder="type a message..." value={message}
                                          onChange={(event) => _handleOnInputChange(event.target.value)} className="inputMessage"/>
-                            <StyledButton type="primary" shape="circle" icon={<SendOutlined/>}
-                                          onClick={_handleSendMessage} className="sendMessage"/>
-                        </div>
+                            <StyledButton type="primary" size="large"
+                                          onClick={_handleSendMessage} className="sendMessage" >Send</StyledButton>
+                        </InputButtonContainer>
+                        <AccessoriesContainer>
+                            <PaperClipOutlined/>
+                            <FileImageOutlined/>
+                            <AudioOutlined/>
+                            <VideoCameraOutlined/>
+                        </AccessoriesContainer>
                     </InputContainer>
-                    <AccessoriesContainer>
-                        <PaperClipOutlined/>
-                        <FileImageOutlined/>
-                        <AudioOutlined/>
-                        <VideoCameraOutlined/>
-                    </AccessoriesContainer>
                 </>}
         </>
     );
 }
+
+export const InputButtonContainer = styled.div`
+  display: grid;
+  grid-template-columns: 90% 10%;
+`;
 
 export const ComponentHeaderWrapper = styled.div`
   height: 6.5rem;
@@ -95,7 +100,8 @@ export const ComponentHeaderWrapper = styled.div`
 export const InputContainer = styled.div`
   display: grid;
   grid-template-columns: 5% auto;
-  padding: 1.5rem 0 0 0;
+  padding: 2rem;
+  align-items: center;
 `;
 
 export const StyledSmileOutlined = styled(SmileOutlined)`
@@ -104,16 +110,26 @@ export const StyledSmileOutlined = styled(SmileOutlined)`
 `;
 
 export const StyledInput = styled(Input)`
-  width: calc(100% - 40px);
-  margin-left: 0.5rem
+  width: 99%;
+  margin-left: 0.5rem;
+  height: 2.5rem;
 `;
 
 export const StyledButton = styled(Button)`
-  
+ margin: 0 0 0 0.5rem;
+ cursor: pointer;
+ outline: none;
+ box-shadow: none;
 `;
 
 export const AccessoriesContainer = styled.div`
-  margin: 0.2rem 0 0 0.5rem;
+  position: relative;
+  left: 3.5rem;
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 5px;
 `;
 
 export default MessageComponentInput;

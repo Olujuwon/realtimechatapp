@@ -6,7 +6,7 @@ import {messageType} from "../types/Message/message";
 import {transformContactsMessagesIntoKeyPair} from "./utils";
 import {contactType} from "../types/Contact/contact";
 import {SAMPLECONTACTS} from "../sampledata/contactsSampleData";
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
+import {signInWithEmailAndPassword, createUserWithEmailAndPassword} from "firebase/auth";
 
 const firebaseInstance = FirebaseInit.getInstance();
 
@@ -108,9 +108,10 @@ export const messagingAppApi = createApi({
         createTestContacts: build.mutation({
             // @ts-ignore
             async queryFn() {
+                console.log("Hell")
                 try {
                     const collectionRef = collection(firebaseInstance.database, "contacts");
-                    SAMPLECONTACTS.map(async (value, index)=>{
+                    SAMPLECONTACTS.map(async (value, index) => {
                         const uuid = value.uid;
                         // @ts-ignore
                         await setDoc(doc(collectionRef, uuid), value)

@@ -1,22 +1,22 @@
 import React from 'react';
-import {MessagesSection, ContactsSection, NavigationSection, Wrapper} from "./Messaging.Styles";
-import NavbarVertical from "../../components/NavigationVertical";
 import MessageComponent from "../../components/MessageComponent";
 import Contacts from "../../components/Contacts";
+import {
+     Container,
+} from "react-bootstrap";
 
 function Messaging() {
     return (
-        <Wrapper>
-            <NavigationSection>
-                <NavbarVertical/>
-            </NavigationSection>
-            <ContactsSection>
-                <Contacts/>
-            </ContactsSection>
-            <MessagesSection>
-                <MessageComponent/>
-            </MessagesSection>
-        </Wrapper>
+        <div className="container-fluid p-0">
+            <div className="row">
+                <div className="col p-0">
+                    <Contacts/>
+                </div>
+                <div className="col-9 p-0">
+                    <MessageComponent/>
+                </div>
+            </div>
+        </div>
     );
 }
 

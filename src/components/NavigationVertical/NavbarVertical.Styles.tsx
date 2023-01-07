@@ -4,30 +4,30 @@ import {CalendarFilled, ContactsFilled, HomeFilled, MessageFilled, RocketFilled}
 // Create a Wrapper component that'll render a <section> tag with some styles
 
 export const HomeItem = styled(HomeFilled)`
-  font-size: 1.3rem;
+  font-size: 1rem;
   align-self: baseline;
-  color: white;
+  color: #588157;
   cursor: pointer;
 `;
 
 export const MessageItem = styled(MessageFilled)`
-  font-size: 1.3rem;
+  font-size: 1rem;
   align-self: baseline;
-  color: white;
+  color: #588157;
   cursor: pointer;
 `;
 
 export const CalendarItem = styled(CalendarFilled)`
-  font-size: 1.3rem;
+  font-size: 1rem;
   align-self: baseline;
-  color: white;
+  color: #588157;
   cursor: pointer;
 `;
 
 export const ContactsItem = styled(ContactsFilled)`
-font-size: 1.3rem;
+font-size: 1rem;
   align-self: baseline;
-  color: white;
+  color: #588157;
   cursor: pointer;
 `;
 
@@ -37,17 +37,17 @@ export const MainNavSectionWrapper = styled.div`
 `;
 
 export const LogoSection = styled(RocketFilled)`
-  font-size: 3rem;
+  font-size: 2rem;
     padding: 1.8rem;
-    color: white;
+    color: #588157;
 `;
 
 // Create a Wrapper component that'll render a <section> tag with some styles
 export const Wrapper = styled.div`
   height: 100vh;
-  width: 100%;
+  width: 80px;
+  margin: 0 auto;
   display: grid;
   grid-template-rows: 25% 45% 30%;
-  grid-gap: 1rem;
-  background-color: black
+  background-color: #DAD7CD;
 `;

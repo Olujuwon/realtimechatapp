@@ -1,23 +1,20 @@
 import React, {useState} from "react";
-import {List, Avatar, Modal, Skeleton} from "antd";
 import {contactType} from "../../types/Contact/contact";
 import {useAppDispatch} from "../../hooks/reduxHooks";
-import {
-    ComponentListExtraWrapper,
-    ContactsSectionHeaderContainer,
-    ContactsSectionHeaderStyledListItem,
-    ContactsSectionHeaderStyledSearch,
-    ContactsSectionHeaderStyledTitle, StyledAddNewText
-} from "./Contact.Styles";
+
 import "../../css/contacts.scss";
-import {PlusCircleFilled} from "@ant-design/icons";
 import AddNewContact from "./AddNewContact";
 import {mainUserUid} from "../../redux/userSlice";
 import {makeContactActive} from "../../redux/contactSlice";
 import {useGetAllContactsBelongingToUserQuery, useCreateNewContactMutation} from "../../redux/appQueryV1";
-import LatestContactMessage from "./LatestContactMessage";
 import LatestContactMessageTime from "./LatestContactMessageTime";
 import NewMessageAlert from "./NewMessageAlert";
+import {Button, Col, FloatingLabel, Form, ListGroup, Row, Modal, Spinner} from "react-bootstrap";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faCircle} from "@fortawesome/free-solid-svg-icons";
+import {debounce} from "lodash";
+import UserOnline from "./UserOnline";
+
 
 /*
 * TODO:
@@ -31,11 +28,13 @@ import NewMessageAlert from "./NewMessageAlert";
 const Contacts: React.FC = (): JSX.Element => {
     const dispatch = useAppDispatch();
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+    let [createContactFormData, setCreateContactFormData] = useState<Array<{label: string, value: string}>>([]);
     const [isCreateNewContactSuccess, setIsCreateNewContactSuccess] = useState<boolean>(false);
     const [createNewContact] = useCreateNewContactMutation();
+
     // @ts-ignore
-    const {data, error, isLoading} = useGetAllContactsBelongingToUserQuery();
-    if (error) return <Skeleton />
+    let {data, error, isLoading} = useGetAllContactsBelongingToUserQuery();
+    if (error) return <Spinner animation="border" />;
 
     const showModal = () => {
         setIsCreateNewContactSuccess(false);
@@ -50,8 +49,23 @@ const Contacts: React.FC = (): JSX.Element => {
         dispatch(makeContactActive(contact));
     }
 
-    const _handleAddContactClick = (values: any) => {
-        let contact: contactType = {
+    const _handleOnChangeFormElement = (event:React.ChangeEvent<HTMLInputElement>)=>{
+        const label=event.currentTarget.name;
+        const value=event.currentTarget.value;
+        createContactFormData = [...createContactFormData];
+        debounce(()=>createContactFormData.push({label:label, value:value}),2000,{leading: true})
+        //createContactFormData.push({label:label, value:value});
+        setCreateContactFormData(createContactFormData);
+        console.log("VAlII", createContactFormData );
+    }
+
+
+    const _handleAddContactClick = () => {
+        // @ts-ignore
+       /* event.preventDefault();*/
+        // @ts-ignore
+        console.log("VAl", );
+        /*let contact: contactType = {
             name: values.firstname + " " + values.lastname,
             profileImg: "",
             email: values.email,
@@ -65,38 +79,62 @@ const Contacts: React.FC = (): JSX.Element => {
         }
         createNewContact(contact);
         setIsCreateNewContactSuccess(true);
-        setTimeout(()=>setIsModalOpen(false), 2000)
+        setTimeout(() => setIsModalOpen(false), 2000)*/
     }
 
     return (
-        <>
-            <ContactsSectionHeaderContainer>
-                <ContactsSectionHeaderStyledTitle>Messages</ContactsSectionHeaderStyledTitle>
-                <ContactsSectionHeaderStyledSearch size="large" placeholder="Search Contacts"/>
-                <StyledAddNewText className="addContact" onClick={() => showModal()}><PlusCircleFilled/> Add new contact</StyledAddNewText>
-            </ContactsSectionHeaderContainer>
-            <List
-                itemLayout="vertical"
-                dataSource={isLoading ? [] : data}
-                renderItem={(contact: contactType, index: number) => {
-                    return (<ContactsSectionHeaderStyledListItem className={`contactWrapper${index}`} onClick={() => _handleOnClickContact(contact)}>
-                        <List.Item.Meta
-                            avatar={<Avatar size={40} src={contact.profileImg}/>}
-                            title={contact.name}
-                            description={<LatestContactMessage contactUid={contact.uid}/>}
-                            className={`list-meta-container`}
-                        />
-                        <ComponentListExtraWrapper>
-                            <LatestContactMessageTime contactUid={contact.uid}/>
-                            <NewMessageAlert contactUid={contact.uid}/>
-                        </ComponentListExtraWrapper>
-                    </ContactsSectionHeaderStyledListItem>);
-                }}
-            />
-            <Modal visible={isModalOpen} onCancel={closeModal} footer={null} centered={true} destroyOnClose={true}>
-                <AddNewContact onFinish={_handleAddContactClick} success={isCreateNewContactSuccess}/>
+        <div className="container-fluid bg-secondary overflow-scroll vh-100">
+            <Row className="row">
+                <h2>Messages</h2>
+
+                <Form>
+                    <Row>
+                        <Col>
+                            <FloatingLabel
+                                controlId="floatingInput"
+                                label="Search Contacts"
+                                className="mb-2"
+                            >
+                                <Form.Control placeholder="Search Contacts" type="text"
+                                              className="my-2"/>
+                            </FloatingLabel>
+                        </Col>
+                    </Row>
+                </Form>
+                <Button variant="secondary" size="sm" onClick={() => showModal()} className="my-2">
+                    Add new contact
+                </Button>
+            </Row>
+            <ListGroup as="ul">
+                {isLoading ? null : data.map((contact: contactType, index: number) => {
+                    return (
+                        <ListGroup.Item action className="border-0" onClick={() => _handleOnClickContact(contact)}>
+                            <div className="float-end">
+                                <LatestContactMessageTime contactUid={contact.uid}/>
+                                <NewMessageAlert contactUid={contact.uid}/>
+                            </div>
+                            <div className="d-flex">
+                                <img
+                                    src={contact.profileImg}
+                                    className="rounded-circle me-1"
+                                    alt={contact.name}
+                                    width="40"
+                                    height="40"
+                                />
+                                <div className="flex-grow-1 ms-3">
+                                    {contact.name}
+                                    <UserOnline/>
+                                </div>
+                            </div>
+                        </ListGroup.Item>
+                    )
+                })}
+            </ListGroup>
+            <Modal show={isModalOpen} onHide={closeModal}>
+                <Modal.Body><AddNewContact onChangeFormElement={_handleOnChangeFormElement} onSubmit={_handleAddContactClick}
+                                           success={isCreateNewContactSuccess}/></Modal.Body>
             </Modal>
-        </>
+        </div>
     );
 }
 
