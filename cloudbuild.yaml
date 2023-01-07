@@ -1,7 +1,12 @@
 # [START cloudbuild_quickstart_build]
 steps:
   - name: 'gcr.io/cloud-builders/docker'
-    args: [ 'build', '-t', 'europe-north1-docker.pkg.dev/$PROJECT_ID/real-time-chat-app-image:tag1', '.' ]
+    args: [ 'build', '-t', 'europe-north1-docker.pkg.dev/$PROJECT_ID/docker-repo/real-time-chat-app-image:tag1', '.' ]
 images:
-  - 'europe-north1-docker.pkg.dev/$PROJECT_ID/real-time-chat-app-image:tag1'
+  - 'europe-north1-docker.pkg.dev/$PROJECT_ID/docker-repo/real-time-chat-app-image:tag1'
+
+# Docker Push
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [ 'push', 'europe-north1-docker.pkg.dev/$PROJECT_ID/docker-repo/real-time-chat-app-image:tag1' ]
+
 # [END cloudbuild_quickstart_build]
