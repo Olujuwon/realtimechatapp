@@ -25,7 +25,6 @@ yarn.lock
 /jenkins_home/
 /jenkins/
 /deploy/jenkins_home/
-/src/assets/img/
 /jenkins_home/jobs/
 /jenkins_home/logs/
 /jenkins_home/plugins/
