@@ -41,3 +41,5 @@ yarn.lock
 /jenkins_home/org.jenkinsci.plugins.gitclient.JGitApacheTool.xml
 /jenkins_home/org.jenkinsci.plugins.gitclient.JGitTool.xml
 /jenkins_home/org.jenkinsci.plugins.workflow.flow.FlowExecutionList.xml
+/.idea/
+/deploy/
