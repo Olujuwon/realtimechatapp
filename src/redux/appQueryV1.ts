@@ -1,5 +1,5 @@
 import {createApi, fakeBaseQuery} from "@reduxjs/toolkit/query/react";
-import {collection, setDoc, doc, query, getDocs, where, addDoc, updateDoc, arrayUnion} from "firebase/firestore";
+import {collection, setDoc, doc, query, getDocs, where, addDoc, updateDoc, arrayUnion, onSnapshot} from "firebase/firestore";
 import FirebaseInit from "../firebase/firebaseInit";
 import {mainUserUid} from "./userSlice";
 import {messageType} from "../types/Message/message";
@@ -95,10 +95,20 @@ export const messagingAppApi = createApi({
                 try {
                     let messagesArray: any = [];
                     const messagesQueryRef = query(collection(firebaseInstance.database, "messages"));
+                    //TODO. lis
                     const messageQuerySnapshot = await getDocs(messagesQueryRef);
                     messageQuerySnapshot.forEach(messageDoc => messagesArray.push(messageDoc.data()));
                     const messagesToUse = messagesArray.filter((message: messageType) => message.sender.includes(activeContact.uid) || message.receiver.includes(activeContact.uid));
                     return {data: messagesToUse};
+                    /*const messagesQueryRefReciever = query(collection(firebaseInstance.database, "messages"),
+                        where("status", "==", "sent"));
+                    const messageQuerySnapshot = await getDocs(messagesQueryRefReciever);
+                    /!*const messagesQueryRefSender = query(collection(firebaseInstance.database, "messages"),
+                        where("sender", "array-contains", activeContact.userUid));
+                    const messageQuerySenderSnapshot = await getDocs(messagesQueryRefReciever);*!/
+                    messageQuerySnapshot.forEach(messageDoc => messagesArray.push(messageDoc.data()));
+                   /!* messageQuerySenderSnapshot.forEach(messageDoc => messagesArray.push(messageDoc.data()));*!/
+                    return {data: messagesArray}*/
                 } catch (e: any) {
                     console.log(e.message);
                     return {error: e.message}

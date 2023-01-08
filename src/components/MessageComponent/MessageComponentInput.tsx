@@ -41,8 +41,8 @@ const MessageComponentInput = (): JSX.Element => {
             timeStamp: (new Date()).valueOf(),
             uid:"",
             status: "sent",
-            sender: [mainUserUid],
-            receiver: [activeContact.uid]
+            sender: [activeContact.uid],
+            receiver: ["bot"]
         };
         return COMPOSEDMESSAGE;
     }
