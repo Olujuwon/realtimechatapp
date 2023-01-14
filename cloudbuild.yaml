@@ -36,11 +36,11 @@ options:
 substitutions:
   _DEPLOY_REGION: europe-north1
   _GCR_HOSTNAME: eu.gcr.io
-  _LABELS: gcb-trigger-id=6771dd77-3b33-4bea-9bb2-02292671c6cd
-  _TRIGGER_ID: 6771dd77-3b33-4bea-9bb2-02292671c6cd
+  _LABELS: real_time_chat_app
+  _TRIGGER_ID: europe_north1_real_time_chat_app
   _PLATFORM: managed
   _SERVICE_NAME: realtimechatapp
-  _REACT_APP_ENVIRONMENT: test
+  _REACT_APP_ENVIRONMENT: develop
 tags:
   - gcp-cloud-build-deploy-cloud-run
   - gcp-cloud-build-deploy-cloud-run-managed
