@@ -54,9 +54,7 @@ const FirebaseInit = (function () {
     function createInstance() {
         const realtimemessageFireApp = initializeApp(firebaseConfigs);
         const  realtimemessageFireApps={};
-        /*realtimemessageFireApps.database= getFirestore(realtimemessageFireApp);*/
-        realtimemessageFireApps.auth = getAuth(realtimemessageFireApp);
-        if (process.env.REACT_APP_ENVIRONMENT === "develop"){
+        if (process.env._REACT_APP_ENVIRONMENT === "develop"){
             realtimemessageFireApps.database = initializeFirestore(realtimemessageFireApp,{
                 useFetchStreams: false,
                 experimentalForceLongPolling: true, // 👈
@@ -65,7 +63,8 @@ const FirebaseInit = (function () {
             connectFirestoreEmulator(realtimemessageFireApps.database, 'localhost', 8080);
             connectAuthEmulator(realtimemessageFireApps.auth, 'http://localhost:9099') ;
         }
-
+        realtimemessageFireApps.database= getFirestore(realtimemessageFireApp);
+        realtimemessageFireApps.auth = getAuth(realtimemessageFireApp);
         return realtimemessageFireApps;
     }
     return {
