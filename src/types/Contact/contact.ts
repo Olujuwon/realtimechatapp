@@ -8,5 +8,6 @@ export interface contactType {
     online: boolean,
     phone:[
         {home: string}
-    ]
+    ],
+    userUid?: string
 }

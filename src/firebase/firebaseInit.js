@@ -38,6 +38,12 @@ const env = "development"
 const FirebaseInit = (function () {
     let instance;
     const firebaseConfigs = {
+        /*apiKey: process.env.REACT_APP_apiKey,
+        authDomain: process.env.REACT_APP_authDomain,
+        projectId: process.env.REACT_APP_projectId,
+        storageBucket: process.env.REACT_APP_storageBucket,
+        messagingSenderId: process.env.REACT_APP_messagingSenderId,
+        appId: process.env.REACT_APP_appId*/
         apiKey: "AIzaSyCKhCg8-Q-7vccfEm96eiJxxb2ol5FrgdQ",
         authDomain: "realtimechatapp-fd983.firebaseapp.com",
         projectId: "realtimechatapp-fd983",
@@ -50,7 +56,7 @@ const FirebaseInit = (function () {
         const  realtimemessageFireApps={};
         /*realtimemessageFireApps.database= getFirestore(realtimemessageFireApp);*/
         realtimemessageFireApps.auth = getAuth(realtimemessageFireApp);
-        if (env === "development"){
+        if (process.env.REACT_APP_ENVIRONMENT === "develop"){
             realtimemessageFireApps.database = initializeFirestore(realtimemessageFireApp,{
                 useFetchStreams: false,
                 experimentalForceLongPolling: true, // 👈

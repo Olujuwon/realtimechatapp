@@ -31,7 +31,7 @@ const MessageComponentBody: React.FC<componentProps> = ({activeContact}): JSX.El
                     preProcessedMessages.map((message: messageType, index: number) => {
                         // @ts-ignore
                         const {data, sender} = message;
-                        const commentTypeValue = sender[0] === mainUserUid ? "from" : "to";
+                        const commentTypeValue = sender[0] === "bot" ? "to" : "from";
                         // @ts-ignore
                         return (
                             <div key={index + "_container"}
