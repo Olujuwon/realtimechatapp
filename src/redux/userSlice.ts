@@ -12,8 +12,8 @@ let initialState: userStateType = {
     userFromFirebase: {}
 }
 
-export const mainUserUid = "mInmQbt0I3U6eV47SqKRchSWMmA2";
-export const otherUserUid = "hpNsyYHws9pndUbbSqp6ZCMN4dVL";
+export const mainUserUid = "Cs3yw0WrMSfCVUSuGrZnLNGJhrd2";
+export const otherUserUid = "ONk2kVjoDDMTkVV0oOIRstgWBr33";
 
 const firebaseInstance = FirebaseInit.getInstance();
 const email = "maintestuser@example.com";
