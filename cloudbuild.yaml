@@ -35,15 +35,14 @@ options:
   logging: CLOUD_LOGGING_ONLY
   substitutionOption: ALLOW_LOOSE
 substitutions:
+  _SERVICE_NAME: real-time-chat-app-develop
+  _LABELS: gcb-trigger-id=34ac6a8e-bc1b-4dc1-99e2-c708c815ae19
+  _TRIGGER_ID: 34ac6a8e-bc1b-4dc1-99e2-c708c815ae19
   _DEPLOY_REGION: europe-north1
   _GCR_HOSTNAME: eu.gcr.io
-  _LABELS: real_time_chat_app
-  _TRIGGER_ID: europe_north1_real_time_chat_app
   _PLATFORM: managed
-  _SERVICE_NAME: realtimechatapp
-  _REACT_APP_ENVIRONMENT: develop
 tags:
   - gcp-cloud-build-deploy-cloud-run
   - gcp-cloud-build-deploy-cloud-run-managed
-  - realtimechatapp
+  - real-time-chat-app-develop
 # [END cloudbuild_quickstart_build]
