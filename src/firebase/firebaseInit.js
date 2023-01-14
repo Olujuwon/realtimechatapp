@@ -38,18 +38,18 @@ const env = "development"
 const FirebaseInit = (function () {
     let instance;
     const firebaseConfigs = {
-        /*apiKey: process.env.REACT_APP_apiKey,
-        authDomain: process.env.REACT_APP_authDomain,
-        projectId: process.env.REACT_APP_projectId,
-        storageBucket: process.env.REACT_APP_storageBucket,
-        messagingSenderId: process.env.REACT_APP_messagingSenderId,
-        appId: process.env.REACT_APP_appId*/
-        apiKey: "AIzaSyCKhCg8-Q-7vccfEm96eiJxxb2ol5FrgdQ",
+        apiKey: process.env._REACT_APP_API_KEY,
+        authDomain: process.env._REACT_APP_AUTH_DOMAIN,
+        projectId: process.env._REACT_APP_PROJECT_ID,
+        storageBucket: process.env._REACT_APP_STORAGE_BUCKET,
+        messagingSenderId: process.env._REACT_APP_MESSAGING_SENDER_ID,
+        appId: process.env._REACT_APP_APP_ID
+        /*apiKey: "AIzaSyCKhCg8-Q-7vccfEm96eiJxxb2ol5FrgdQ",
         authDomain: "realtimechatapp-fd983.firebaseapp.com",
         projectId: "realtimechatapp-fd983",
         storageBucket: "realtimechatapp-fd983.appspot.com",
         messagingSenderId: "176244274562",
-        appId: "1:176244274562:web:68f9c5e3038fb92e26cb9b"
+        appId: "1:176244274562:web:68f9c5e3038fb92e26cb9b"*/
     };
     function createInstance() {
         const realtimemessageFireApp = initializeApp(firebaseConfigs);
