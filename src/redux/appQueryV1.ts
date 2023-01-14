@@ -98,7 +98,7 @@ export const messagingAppApi = createApi({
                     //TODO. lis
                     const messageQuerySnapshot = await getDocs(messagesQueryRef);
                     messageQuerySnapshot.forEach(messageDoc => messagesArray.push(messageDoc.data()));
-                    const messagesToUse = messagesArray.filter((message: messageType) => message.sender.includes(activeContact.uid) || message.receiver.includes(activeContact.uid));
+                    const messagesToUse = messagesArray.filter((message: messageType) => (message.sender[0] === activeContact.uid) || (message.receiver[0] === activeContact.uid));
                     return {data: messagesToUse};
                     /*const messagesQueryRefReciever = query(collection(firebaseInstance.database, "messages"),
                         where("status", "==", "sent"));

@@ -106,7 +106,7 @@ const Contacts: React.FC = (): JSX.Element => {
                 </Button>
             </Row>
             <ListGroup as="ul">
-                {isLoading ? null : data.map((contact: contactType, index: number) => {
+                {isLoading ? [] : data.map((contact: contactType, index: number) => {
                     return (
                         <ListGroup.Item action className="border-0" onClick={() => _handleOnClickContact(contact)}>
                             <div className="float-end">
