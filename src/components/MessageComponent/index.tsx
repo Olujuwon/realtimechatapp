@@ -32,11 +32,11 @@ const MessageComponent = (): JSX.Element => {
 
 
 export const Wrapper = styled.div`
- 
+
   width: auto;
-  background:#DAD7CD;
+  background: #DAD7CD;
   display: grid;
-  grid-template-rows: 10% 80% 10%
+  grid-template-rows: 10% 5% 75% 10%
 `;
 
 export default MessageComponent;

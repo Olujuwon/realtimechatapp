@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import MessageBubble from "./MessageBubble";
 import {EmptyDiv, MessageBodyWrapper, MessageContainer} from "./Message.Styles";
 import {Divider, Skeleton} from "antd";
@@ -8,8 +8,9 @@ import {_sortMessagesArray} from "./util";
 import {useAppSelector} from "../../hooks/reduxHooks";
 import {selectActiveContact} from "../../redux/contactSlice";
 import {mainUserUid} from "../../redux/userSlice";
-import {useGetAllActiveContactMessageQuery} from "../../redux/appQueryV1";
+import {useGetAllActiveContactMessageQuery,useListenForNewMessagesMutation} from "../../redux/appQueryV1";
 import {contactType} from "../../types/Contact/contact";
+import  useGetmessagesAndListenForNewMessages from "../../hooks/useGetmessagesAndListenForNewMessages"
 
 type componentProps = {
     activeContact: contactType
@@ -17,18 +18,19 @@ type componentProps = {
 const MessageComponentBody: React.FC<componentProps> = ({activeContact}): JSX.Element => {
     /*const activeContact = useAppSelector(selectActiveContact);*/
     console.log("BOdey messages1", activeContact);
+    const {sentMessages, receivedMessages} =  useGetmessagesAndListenForNewMessages(activeContact);
+    console.log("MESSAGES", [...sentMessages, ...receivedMessages])
     const {data, error, isLoading} = useGetAllActiveContactMessageQuery(activeContact);
-    console.log("BOdey messages", data);
     if (Object.keys(activeContact).length === 0) return <Skeleton/>
     if (data === undefined) return <Skeleton/>
     if (error) return <Skeleton/>
-    const preProcessedMessages = !data ? [] : _sortMessagesArray(data);
+    const preProcessedMessages = _sortMessagesArray([...sentMessages, ...receivedMessages]);
     // @ts-ignore
     return (
         <div>
             {
                 preProcessedMessages.length !== 0 ?
-                    preProcessedMessages.map((message: messageType, index: number) => {
+                    preProcessedMessages.splice(preProcessedMessages.length-11, preProcessedMessages.length-1).map((message: messageType, index: number) => {
                         // @ts-ignore
                         const {data, sender} = message;
                         const commentTypeValue = sender[0] === "bot" ? "to" : "from";

@@ -1,0 +1,22 @@
+{
+  "SENDING": {
+    "label": "Sending",
+    "value": "sending"
+  },
+  "SENT": {
+    "label": "Sent",
+    "value": "sent"
+  },
+  "DELIVERED": {
+    "label": "Delivered",
+    "value": "delivered"
+  },
+  "SEEN": {
+    "label": "Seen",
+    "value": "seen"
+  },
+  "READ": {
+    "label": "Read",
+    "value": "read"
+  }
+}

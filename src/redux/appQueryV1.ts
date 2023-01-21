@@ -16,6 +16,7 @@ export default interface userSigninType {
 }
 
 // @ts-ignore
+// @ts-ignore
 export const messagingAppApi = createApi({
     reducerPath: "messagingApi",
     baseQuery: fakeBaseQuery(),
@@ -82,7 +83,7 @@ export const messagingAppApi = createApi({
                 try {
                     const messagesCollectionRef = collection(firebaseInstance.database, "messages");
                     await setDoc(doc(messagesCollectionRef), messageToSend)
-                    return {newMessage: messageToSend};
+                    return {newMessage: messageToSend};//TODO reset state
                 } catch (e: any) {
                     console.log(e.message);
                     return {error: e.message}
@@ -165,6 +166,54 @@ export const messagingAppApi = createApi({
             },
             invalidatesTags: ["user"]
         }),
+        listenForNewMessages: build.mutation({
+            // @ts-ignore
+            async queryFn(activeContact: contactType) {
+                console.log("Latest messages01", activeContact)
+                const collectionRef = collection(firebaseInstance.database, "messages");
+                const q = query(collectionRef, where("sender", "array-contains", activeContact.uid));
+                const q2 = query(collectionRef, where("receiver", "array-contains", activeContact.uid));
+                let latestMessages: Array<messageType> = [];
+                try {
+                    /*
+                    * listen using onSnapshot
+                    *
+                    * */
+                    onSnapshot(q, (querySnapshot)=>{
+                        querySnapshot.forEach((message)=>{
+                            console.log("Latest messages000", message.data())
+                            latestMessages.push(message.data() as messageType)
+                        })
+                    });
+                    onSnapshot(q2, (querySnapshot)=>{
+                        querySnapshot.forEach((message)=>{
+                            console.log("Latest messages001", message.data())
+                            latestMessages.push(message.data() as messageType)
+                        })
+                    });
+                    console.log("Latest messages", latestMessages)
+                } catch (e: any) {
+                    console.log(e.message);
+                    return {error: e.message}
+                }
+            },
+            invalidatesTags: ["message"],
+            async onCacheEntryAdded(arg, { dispatch,
+                getState,
+                extra,
+                requestId,
+                cacheEntryRemoved,
+                cacheDataLoaded,
+                getCacheEntry, }){
+                try{
+                    await cacheDataLoaded;
+                    console.log("State of Redux",getState())
+
+                }catch (e:any) {
+                    console.log(e.message);
+                }
+            },
+        }),
     })
 });
 
@@ -176,7 +225,9 @@ export const {
     useGetAllActiveContactMessageQuery,
     useCreateTestContactsMutation,
     useSigninUserMutation,
-    useSignupUserMutation
+    useSignupUserMutation,
+    useListenForNewMessagesMutation,
 } = messagingAppApi
 
+// @ts-ignore
 export const {endpoints, reducerPath, reducer, middleware} = messagingAppApi

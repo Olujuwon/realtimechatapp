@@ -21,7 +21,6 @@ const MessageBubble = ({commentType, content, messagesTime, sender}: componentPr
     const now = moment();
     // @ts-ignore
     messagesTime = moment(new Date(messagesTime));
-    console.log("message bubble", commentType)
     const WhichBubble = () => {
         if (commentType === "to") {
             return (
