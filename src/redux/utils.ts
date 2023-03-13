@@ -1,6 +1,5 @@
 import {messageType} from "../types/Message/message";
-import {contactType} from "../types/Contact/contact";
-import {mainUserUid} from "./userSlice";
+import {userType} from "../types/User/user";
 
 export function removeDuplicateFromArray(arrayToCheck: messageType[]) {
     let seen = new Set();
@@ -28,24 +27,4 @@ export function reviver(key:any, value:any) {
         }
     }
     return value;
-}
-
-export function transformContactsMessagesIntoKeyPair(contactsArrayToTransform: Array<contactType>, messagesArrayToTransform: Array<messageType>) {
-    let newContactsMessagesPair = new Map<String, messageType[]>();
-    contactsArrayToTransform.map(async (item, index) => {
-        let messagesArray: any = [];
-        messagesArrayToTransform.forEach(message => {
-            const {sender, receiver} = message;
-            if (sender[0] === item.uid && receiver[0] === mainUserUid) {
-                messagesArray.push(message);
-            } else if (sender[0] === mainUserUid && receiver[0] === item.uid) {
-                messagesArray.push(message);
-            }else{
-                return;
-            }
-        });
-        let uniqueMessages = removeDuplicateFromArray(messagesArray);
-        newContactsMessagesPair.set(item.uid, uniqueMessages);
-    });
-    return newContactsMessagesPair;
 }

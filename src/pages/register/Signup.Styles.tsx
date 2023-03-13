@@ -1,18 +1,12 @@
 import styled from "styled-components";
-import {Col, Row, Input, Form, Button, Typography} from "antd";
+import {Col, Form, Button} from "react-bootstrap";
 
-const {Title, Text} = Typography;
-const {Search} = Input;
-
-export const SignupColumn = styled(Col)`
-    margin: 0 auto;
-    width: 40%;
-`;
-
-export const SignupForm = styled(Form)`
-   
-`;
-
-export const SignupButton = styled(Button)`
-   
+export const SignupAuthContainer = styled(Col)`
+  padding-top: 20%;
+  padding-bottom: 20%;
+  width: 60%;
+  margin: 0 auto;
+  @media only screen and (max-width: 768px) {
+    width: 90%;
+  }
 `;
