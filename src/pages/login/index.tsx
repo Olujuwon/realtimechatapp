@@ -1,66 +1,82 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Helmet} from "react-helmet-async";
-import {Col, Row, Input, Form, Button} from 'antd';
-import {SigninButton, SigninColumn, SigninForm} from "./Signin.Styles";
+
+import {Row, Col, Card, FloatingLabel, Form, Button, Alert} from "react-bootstrap";
+import {SigninAuthContainer} from "./Signin.Styles";
+import AppFormComponent, {IFormDataProps} from '../../components/Form';
+
 import userSigninType, {useSigninUserMutation} from "../../redux/appQueryV1";
-import { useNavigate } from "react-router-dom";
-// @ts-ignore
+import useManageAuthUser from "../../hooks/useManageAuthUser";
+
+import {Link, useNavigate} from "react-router-dom";
 import Cookies from 'js-cookie';
 
-const SignIn = ()=>{
-    // @ts-ignore
-    const [signinUser, result ]= useSigninUserMutation();
+const SIGN_IN_FORM_DATA: Array<IFormDataProps> = [
+    {
+        name: "email",
+        label: "Email/Username",
+        infoText: "",
+        type: "email",
+        placeholder: "",
+    },
+    {
+        name: "password",
+        label: "Password",
+        infoText: "",
+        type: "password",
+        placeholder: "",
+    }
+]
+const SignIn = () => {
+    const {handleSigninUser, authenticatedUser} = useManageAuthUser();
+    const [email, setEmail] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
+    const [submitButtonDisabled, setSubmitButtonDisabled] = useState<boolean>(true);
+    const [showAlert, setShowAlert] = useState<boolean>(false);
+    const [alartVariant, setAlartVariant] = useState<string>("light");
+    const [alartMessage, setAlartMessage] = useState<string>("");
     const navigate = useNavigate();
-    const handleSubmit = async(values: any)=>{
-        let userDetails:userSigninType = {
-            email: values.email,
-            password: values.password
-        }
-        const signUserIn = await signinUser(userDetails);
-        // @ts-ignore
-        if (signUserIn.error) {
-            alert("Something went wrong!")
-        }else{
-            const response = {...signUserIn};
-            // @ts-ignore
-            Cookies.set("user", response.data.uid, 7200000)
-            navigate("/home");
+
+    const _handleInputElementChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const name = event.currentTarget.name;
+        const value = event.currentTarget.value;
+        const capitalizeInputName = name.charAt(0).toUpperCase() + name.slice(1);
+        const setFunc = `set${capitalizeInputName}`;
+        eval(setFunc)(value);//perhaps not the best method, it works for now and can be improved later!
+        if (email !== "" && password !== "") {
+            setSubmitButtonDisabled(false);
         }
     }
+    const _handleSubmit = async (event: React.ChangeEvent<HTMLInputElement>) => {
+        event.preventDefault();
+        const user: any = await handleSigninUser({
+            email: email,
+            password: password
+        } as userSigninType);
+        if (user.data) navigate("/messaging")
+        else {
+            const {error} = user;
+            setAlartVariant("danger");
+            setAlartMessage(error);
+            setShowAlert(true);
+            setTimeout(() => setShowAlert(false), 5000);
+        }
+    }
+
     return (
         <React.Fragment>
-            <Helmet title="Signin" />
-            <Row justify="space-around" align="middle">
-                <SigninColumn>
-                    <SigninForm name="basic"
-                          labelCol={{span: 8}}
-                          wrapperCol={{span: 16}}
-                          initialValues={{remember: true}}
-                          onFinish={handleSubmit}
-                          onFinishFailed={() => console.log("OnFinishFailed")}
-                          autoComplete="off">
-                        <Form.Item
-                            label="Email"
-                            name="email"
-                            initialValue="maintestuser@example.com"
-                            rules={[{required: true, message: 'Field can not be empty'}]}
-                        >
-                            <Input placeholder="e.g messaging@gmaik.cu" type="text"/>
-                        </Form.Item>
-                        <Form.Item
-                            label="Password"
-                            name="password"
-                            initialValue="1234567890"
-                            rules={[{required: true, message: 'Field can not be empty'}]}
-                        >
-                            <Input placeholder="password" type="password"/>
-                        </Form.Item>
-                        <Form.Item wrapperCol={{offset: 8, span: 16}}>
-                            <SigninButton type="primary" htmlType="submit">Sign in</SigninButton>
-                        </Form.Item>
-                    </SigninForm>
-                </SigninColumn>
-            </Row>
+            <Helmet title="Signin"/>
+            <SigninAuthContainer>
+                <div><p>Want to have a chat with Alex? Sign in </p></div>
+                <Alert variant={alartVariant} show={showAlert}>
+                    {alartMessage}
+                </Alert>
+                <AppFormComponent
+                    formData={SIGN_IN_FORM_DATA}
+                    onChangeFormElement={_handleInputElementChange}
+                    onSubmit={_handleSubmit} submitButtonDisabled={submitButtonDisabled}/>
+                <div><p>Are you new? <Link to="/signup">Sign up</Link></p></div>
+            </SigninAuthContainer>
         </React.Fragment>
     );
 }

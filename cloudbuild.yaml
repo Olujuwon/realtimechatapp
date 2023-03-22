@@ -1,7 +1,7 @@
 # [START cloudbuild_quickstart_build]
 steps:
   - name: gcr.io/cloud-builders/docker
-    args:
+    args: 
       - build
       - '--no-cache'
       - '-t'
@@ -10,6 +10,16 @@ steps:
       - '-f'
       - Dockerfile
     id: Build
+    secretEnv:
+      - REACT_APP_VERSION
+      - REACT_APP_ENVIRONMENT
+      - REACT_APP_API_KEY
+      - REACT_APP_AUTH_DOMAIN
+      - REACT_APP_PROJECT_ID
+      - REACT_APP_STORAGE_BUCKET
+      - REACT_APP_MESSAGING_SENDER_ID
+      - REACT_APP_APP_ID
+      - REACT_APP_APP_COOKIE_EXPIRES
   - name: gcr.io/cloud-builders/docker
     args:
       - push
@@ -32,17 +42,37 @@ steps:
 images:
   - '$_GCR_HOSTNAME/$PROJECT_ID/$REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA'
 options:
+  logging: CLOUD_LOGGING_ONLY
   substitutionOption: ALLOW_LOOSE
 substitutions:
+  _SERVICE_NAME: real-time-chat-app-develop
+  _LABELS: gcb-trigger-id=34ac6a8e-bc1b-4dc1-99e2-c708c815ae19
+  _TRIGGER_ID: 34ac6a8e-bc1b-4dc1-99e2-c708c815ae19
   _DEPLOY_REGION: europe-north1
   _GCR_HOSTNAME: eu.gcr.io
-  _LABELS: real_time_chat_app
-  _TRIGGER_ID: europe_north1_real_time_chat_app
   _PLATFORM: managed
-  _SERVICE_NAME: realtimechatapp
-  _REACT_APP_ENVIRONMENT: develop
 tags:
   - gcp-cloud-build-deploy-cloud-run
   - gcp-cloud-build-deploy-cloud-run-managed
-  - realtimechatapp
+  - real-time-chat-app-develop
+availableSecrets:
+  secretManager:
+    - versionName: 'projects/$PROJECT_ID/secrets/REACT_APP_VERSION/versions/1'
+      env: 'REACT_APP_VERSION'
+    - versionName: 'projects/$PROJECT_ID/secrets/REACT_APP_ENVIRONMENT/versions/1'
+      env: 'REACT_APP_ENVIRONMENT'
+    - versionName: 'projects/$PROJECT_ID/secrets/REACT_APP_API_KEY/versions/1'
+      env: 'REACT_APP_API_KEY'
+    - versionName: 'projects/$PROJECT_ID/secrets/REACT_APP_AUTH_DOMAIN/versions/1'
+      env: 'REACT_APP_AUTH_DOMAIN'
+    - versionName: 'projects/$PROJECT_ID/secrets/REACT_APP_PROJECT_ID/versions/1'
+      env: 'REACT_APP_PROJECT_ID'
+    - versionName: 'projects/$PROJECT_ID/secrets/REACT_APP_STORAGE_BUCKET/versions/1'
+      env: 'REACT_APP_STORAGE_BUCKET'
+    - versionName: 'projects/$PROJECT_ID/secrets/REACT_APP_MESSAGING_SENDER_ID/versions/1'
+      env: 'REACT_APP_MESSAGING_SENDER_ID'
+    - versionName: 'projects/$PROJECT_ID/secrets/REACT_APP_APP_ID/versions/1'
+      env: 'REACT_APP_APP_ID'
+    - versionName: 'projects/$PROJECT_ID/secrets/REACT_APP_APP_COOKIE_EXPIRES/versions/1'
+      env: 'REACT_APP_APP_COOKIE_EXPIRES'
 # [END cloudbuild_quickstart_build]

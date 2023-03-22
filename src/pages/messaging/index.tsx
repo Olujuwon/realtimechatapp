@@ -1,24 +1,42 @@
-import React from 'react';
-import MessageComponent from "../../components/MessageComponent";
-import Contacts from "../../components/Contacts";
+import React, {useEffect, useState} from 'react';
+import styled from "styled-components";
+
+import MessageComponent from "../../components/Message";
+import SideBar from "../../components/Sidebar-info";
 import {
-     Container,
+    Col,
+    Container, Row,
 } from "react-bootstrap";
+import {
+    MessagingInfoColumn,
+    MessagingMessageColumn,
+    MessagingWrapper
+} from '../../components/Message/Message.Styles';
+
+import useManageAuthUser from '../../hooks/useManageAuthUser';
+
+import {useNavigate} from 'react-router-dom';
 
 function Messaging() {
+    const {isUserLoggedIn, authenticatedUser} = useManageAuthUser();
+    const navigate = useNavigate();
+    if (!isUserLoggedIn()) navigate("/signin");
+    const [user, setUser] = useState(null);
+    
+    useEffect(() => {
+        if (authenticatedUser !== null) setUser(authenticatedUser);
+    }, [authenticatedUser]);
+    
     return (
-        <div className="container-fluid p-0">
-            <div className="row">
-                <div className="col p-0">
-                    <Contacts/>
-                </div>
-                <div className="col-9 p-0">
-                    <MessageComponent/>
-                </div>
-            </div>
-        </div>
+        <MessagingWrapper>
+            <MessagingInfoColumn sm md lg={2} xl={2} xxl={3}>
+                <SideBar/>
+            </MessagingInfoColumn>
+            <MessagingMessageColumn sm md lg xl xxl>
+                {user === null ? null : < MessageComponent user={user}/>}
+            </MessagingMessageColumn>
+        </MessagingWrapper>
     );
 }
-
 
 export default Messaging;

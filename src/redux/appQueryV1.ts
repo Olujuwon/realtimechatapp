@@ -1,13 +1,27 @@
 import {createApi, fakeBaseQuery} from "@reduxjs/toolkit/query/react";
-import {collection, setDoc, doc, query, getDocs, where, addDoc, updateDoc, arrayUnion, onSnapshot} from "firebase/firestore";
+import {
+    collection,
+    setDoc,
+    doc,
+    getDoc,
+    query,
+    getDocs,
+    where,
+    addDoc,
+    updateDoc,
+    arrayUnion,
+    onSnapshot
+} from "firebase/firestore";
 import FirebaseInit from "../firebase/firebaseInit";
-import {mainUserUid} from "./userSlice";
 import {messageType} from "../types/Message/message";
-import {transformContactsMessagesIntoKeyPair} from "./utils";
-import {contactType} from "../types/Contact/contact";
-import {SAMPLECONTACTS} from "../sampledata/contactsSampleData";
-import {signInWithEmailAndPassword, createUserWithEmailAndPassword} from "firebase/auth";
-
+import {userType} from "../types/User/user";
+import {
+    signInWithEmailAndPassword,
+    createUserWithEmailAndPassword,
+    onAuthStateChanged,
+    getAuth
+} from "firebase/auth";
+import * as cryptoJs from 'crypto-js';
 const firebaseInstance = FirebaseInit.getInstance();
 
 export default interface userSigninType {
@@ -15,129 +29,56 @@ export default interface userSigninType {
     password: string
 }
 
+export default interface userSignupType {
+    email: string,
+    password: string
+    firstname: string,
+    lastname: string,
+    phoneNumber: string
+}
+
+// @ts-ignore
 // @ts-ignore
 export const messagingAppApi = createApi({
     reducerPath: "messagingApi",
     baseQuery: fakeBaseQuery(),
-    tagTypes: ["contact", "message", "user"],
+    tagTypes: ["message", "user"],
     endpoints: (build) => ({
-        getAllContactsBelongingToUser: build.query({
-            // @ts-ignore
-            async queryFn() {
-                try {
-                    const contactsQueryRef = query(collection(firebaseInstance.database, "contacts"),
-                        where("contacts", "array-contains", mainUserUid));
-                    const querySnapshot = await getDocs(contactsQueryRef);
-                    let allContacts: any = [];
-                    querySnapshot.forEach((doc) => {
-                        allContacts.push(doc.data());
-                    });
-                    return {data: allContacts};
-                } catch (e: any) {
-                    console.log("Error getting test contacts", e.message)
-                    return {error: e.message}
-                }
-            }, providesTags: ["contact"]
-        }),
-        getContactsMessagesKeyValue: build.query({
-            //TODO: Make Obsolete
-            // @ts-ignore
-            async queryFn() {
-                let contactsArray: any = [];
-                let messagesArray: any = [];
-                const messagesQueryRef = query(collection(firebaseInstance.database, "messages"));
-                const contactsQueryRef = query(collection(firebaseInstance.database, "contacts"),
-                    where("contacts", "array-contains", mainUserUid));
-                try {
-                    const contactQuerySnapshot = await getDocs(contactsQueryRef);
-                    const messageQuerySnapshot = await getDocs(messagesQueryRef);
-                    messageQuerySnapshot.forEach(messageDoc => messagesArray.push(messageDoc.data()));
-                    contactQuerySnapshot.forEach(contactDoc => contactsArray.push(contactDoc.data()));
-                    let contactsMessagesKeyPair: Map<String, messageType[]> =
-                        transformContactsMessagesIntoKeyPair(contactsArray, messagesArray);
-                    return {data: contactsMessagesKeyPair};
-                } catch (e: any) {
-                    console.error("Failed to fetch and process contacts and messages")
-                    //return {error: e.message}
-                }
-            }, providesTags: ["contact"]
-        }),
-        createNewContact: build.mutation({
-            // @ts-ignore
-            async queryFn(newContactObject) {
-                try {
-                    const contactRef = await addDoc(collection(firebaseInstance.database, "contacts"), newContactObject);
-                    const mainContactRef = doc(firebaseInstance.database, "contacts", mainUserUid);
-                    await updateDoc(mainContactRef, {contacts: arrayUnion(contactRef.id)});
-                    return {id: contactRef.id};
-                } catch (e: any) {
-                    console.log(e.message);
-                    return {error: e.message}
-                }
-            }, invalidatesTags: ["contact"]
-        }),
-        sendNewMessageToContact: build.mutation({
+        sendNewMessage: build.mutation({
             // @ts-ignore
             async queryFn(messageToSend) {
                 try {
                     const messagesCollectionRef = collection(firebaseInstance.database, "messages");
-                    await setDoc(doc(messagesCollectionRef), messageToSend)
+                    console.log("Encryption secret", process.env.REACT_APP_APP_ID);
+                    messageToSend.data = cryptoJs.AES.encrypt(JSON.stringify(messageToSend.data), "1:176244274562:web:68f9c5e3038fb92e26cb9b").toString();
+                    await setDoc(doc(messagesCollectionRef, messageToSend.uid), messageToSend);
                     return {newMessage: messageToSend};
                 } catch (e: any) {
-                    console.log(e.message);
+                    console.error(e.message);
                     return {error: e.message}
                 }
             }, invalidatesTags: ["message"]
         }),
-        getAllActiveContactMessage: build.query({
+        getAllActiveUserMessage: build.query({
             // @ts-ignore
-            async queryFn(activeContact: contactType) {
+            async queryFn(activeContact: userType) {
                 try {
                     let messagesArray: any = [];
                     const messagesQueryRef = query(collection(firebaseInstance.database, "messages"));
-                    //TODO. lis
                     const messageQuerySnapshot = await getDocs(messagesQueryRef);
                     messageQuerySnapshot.forEach(messageDoc => messagesArray.push(messageDoc.data()));
-                    const messagesToUse = messagesArray.filter((message: messageType) => message.sender.includes(activeContact.uid) || message.receiver.includes(activeContact.uid));
+                    const messagesToUse = messagesArray.filter((message: messageType) => (message.sender[0] === activeContact.uid) || (message.receiver[0] === activeContact.uid));
                     return {data: messagesToUse};
-                    /*const messagesQueryRefReciever = query(collection(firebaseInstance.database, "messages"),
-                        where("status", "==", "sent"));
-                    const messageQuerySnapshot = await getDocs(messagesQueryRefReciever);
-                    /!*const messagesQueryRefSender = query(collection(firebaseInstance.database, "messages"),
-                        where("sender", "array-contains", activeContact.userUid));
-                    const messageQuerySenderSnapshot = await getDocs(messagesQueryRefReciever);*!/
-                    messageQuerySnapshot.forEach(messageDoc => messagesArray.push(messageDoc.data()));
-                   /!* messageQuerySenderSnapshot.forEach(messageDoc => messagesArray.push(messageDoc.data()));*!/
-                    return {data: messagesArray}*/
                 } catch (e: any) {
-                    console.log(e.message);
+                    console.error(e.message);
                     return {error: e.message}
                 }
             }, providesTags: ["message"]
-        }),
-        createTestContacts: build.mutation({
-            // @ts-ignore
-            async queryFn() {
-                console.log("Hell")
-                try {
-                    const collectionRef = collection(firebaseInstance.database, "contacts");
-                    SAMPLECONTACTS.map(async (value, index) => {
-                        const uuid = value.uid;
-                        // @ts-ignore
-                        await setDoc(doc(collectionRef, uuid), value)
-                    });
-                    return {data: "OK"};
-                } catch (e: any) {
-                    console.log(e.message);
-                    return {error: e.message}
-                }
-            }, invalidatesTags: ["contact"]
         }),
         signinUser: build.mutation({
             // @ts-ignore
             async queryFn(userDetails: userSigninType) {
                 const {email, password} = userDetails;
-                console.log("From Query", userDetails)
                 try {
                     const user = await signInWithEmailAndPassword(firebaseInstance.auth, email, password);
                     return {data: user.user};
@@ -150,33 +91,76 @@ export const messagingAppApi = createApi({
         }),
         signupUser: build.mutation({
             // @ts-ignore
-            async queryFn(userDetails: userSigninType) {
-                const collectionRef = collection(firebaseInstance.database, "contacts");
+            async queryFn(userDetails: userSignUpType) {
                 const {email, password} = userDetails;
+                delete userDetails.password;
                 console.log("From Query signup", userDetails)
                 try {
                     const user = await createUserWithEmailAndPassword(firebaseInstance.auth, email, password);
-                    await setDoc(doc(collectionRef, "uuid"), {})
-                    return {data: user.user};
+                    return {data: "New user registered successfully"};
                 } catch (e: any) {
-                    console.log(e.message);
+                    console.error("Trying to create new user", e.message);
                     return {error: e.message}
                 }
             },
             invalidatesTags: ["user"]
         }),
+        listenForNewMessages: build.mutation({
+            // @ts-ignore
+            async queryFn(user: userType) {
+                console.log("Latest messages01", user)
+                const collectionRef = collection(firebaseInstance.database, "messages");
+                const q = query(collectionRef, where("sender", "array-contains", user.uid));
+                const q2 = query(collectionRef, where("receiver", "array-contains", user.uid));
+                let latestMessages: Array<messageType> = [];
+                try {
+                    onSnapshot(q, (querySnapshot) => {
+                        querySnapshot.forEach((message) => {
+                            console.log("Latest messages000", message.data())
+                            latestMessages.push(message.data() as messageType)
+                        })
+                    });
+                    onSnapshot(q2, (querySnapshot) => {
+                        querySnapshot.forEach((message) => {
+                            console.log("Latest messages001", message.data())
+                            latestMessages.push(message.data() as messageType)
+                        })
+                    });
+                    console.log("Latest messages", latestMessages)
+                } catch (e: any) {
+                    console.log(e.message);
+                    return {error: e.message}
+                }
+            },
+            invalidatesTags: ["message"],
+            async onCacheEntryAdded(arg, {
+                dispatch,
+                getState,
+                extra,
+                requestId,
+                cacheEntryRemoved,
+                cacheDataLoaded,
+                getCacheEntry,
+            }) {
+                try {
+                    await cacheDataLoaded;
+                    console.log("State of Redux", getState())
+
+                } catch (e: any) {
+                    console.log(e.message);
+                }
+            },
+        }),
     })
 });
 
 export const {
-    useGetAllContactsBelongingToUserQuery,
-    useGetContactsMessagesKeyValueQuery,
-    useCreateNewContactMutation,
-    useSendNewMessageToContactMutation,
-    useGetAllActiveContactMessageQuery,
-    useCreateTestContactsMutation,
+    useSendNewMessageMutation,
+    useGetAllActiveUserMessageQuery,
     useSigninUserMutation,
-    useSignupUserMutation
+    useSignupUserMutation,
+    useListenForNewMessagesMutation,
 } = messagingAppApi
 
+// @ts-ignore
 export const {endpoints, reducerPath, reducer, middleware} = messagingAppApi

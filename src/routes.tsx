@@ -1,17 +1,21 @@
 import Messaging from "./pages/messaging";
 import React from "react";
-import Home from "./pages/home";
 import SignIn from "./pages/login";
 import SignUp from "./pages/register";
+import SideBar from "./components/Sidebar-info";
 
 const routes = [
     {
         path: "/",
-        element: <Home/>,
+        element: <SignIn/>,
     },
     {
         path: "/signin",
         element: <SignIn/>,
+    },
+    {
+        path: "/about",
+        element: <SideBar/>,
     },
     {
         path: "signup",
