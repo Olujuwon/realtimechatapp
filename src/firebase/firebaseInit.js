@@ -1,8 +1,8 @@
 import {initializeApp} from "firebase/app";
-import {  getFirestore, connectFirestoreEmulator, initializeFirestore } from "firebase/firestore"
-import { getAuth, connectAuthEmulator } from 'firebase/auth';
+import {getFirestore, connectFirestoreEmulator, initializeFirestore} from "firebase/firestore"
+import {getAuth, connectAuthEmulator} from 'firebase/auth';
 
-const env = "development"
+const env = "development";
 
 const FirebaseInit = (function () {
     let instance;
@@ -14,23 +14,25 @@ const FirebaseInit = (function () {
         messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
         appId: process.env.REACT_APP_APP_ID
     };
+
     function createInstance() {
         const realtimemessageFireApp = initializeApp(firebaseConfigs);
-        const  realtimemessageFireApps={};
+        const realtimemessageFireApps = {};
         realtimemessageFireApps.auth = getAuth(realtimemessageFireApp);
-        if (process.env.REACT_APP_ENVIRONMENT == "develop"){
-            realtimemessageFireApps.database = initializeFirestore(realtimemessageFireApp,{
+        if (process.env.REACT_APP_ENVIRONMENT == "develop") {
+            realtimemessageFireApps.database = initializeFirestore(realtimemessageFireApp, {
                 useFetchStreams: false,
                 experimentalForceLongPolling: true, // 👈
                 merge: true,
             });
             connectFirestoreEmulator(realtimemessageFireApps.database, 'localhost', 8080);
-            connectAuthEmulator(realtimemessageFireApps.auth, 'http://localhost:9099') ;
-        }else{
-            realtimemessageFireApps.database= getFirestore(realtimemessageFireApp);
+            connectAuthEmulator(realtimemessageFireApps.auth, 'http://localhost:9099');
+        } else {
+            realtimemessageFireApps.database = getFirestore(realtimemessageFireApp);
         }
         return realtimemessageFireApps;
     }
+
     return {
         getInstance: function () {
             if (!instance) {
