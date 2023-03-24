@@ -34,7 +34,7 @@ ENV REACT_APP_APP_ID=${REACT_APP_APP_ID}
 ENV REACT_APP_APP_COOKIE_EXPIRES=${REACT_APP_APP_COOKIE_EXPIRES}
 ENV NODE_ENV=test
 # Copy built assets from `builder` image
-RUN npm run echo $REACT_APP_API_KEY
+RUN echo $REACT_APP_API_KEY
 COPY --from=builder /app/build /usr/share/nginx/html
 # Add your nginx.conf
 COPY nginx.conf /etc/nginx/conf.d/default.conf
