@@ -8,10 +8,12 @@ import {
 } from "./SideBar.Styles";
 
 const SideBar: React.FC = (): JSX.Element => {
+    // @ts-ignore
+    const APP_VERSION: string = process.env.REACT_APP_VERSION;
     return (
         <SidebarContainer>
             <StyledTitle>Realtime Chat Application</StyledTitle>
-            <StyledSidebarVersion>version {process.env.REACT_APP_VERSION} </StyledSidebarVersion>
+            <StyledSidebarVersion>version {APP_VERSION} </StyledSidebarVersion>
             <StyledSidebarInfoMessageHeading>About</StyledSidebarInfoMessageHeading>
             <StyledSidebarInfoMessage>
                 Frontend messaging application interface integrated with OpenAI's ChatGPT to

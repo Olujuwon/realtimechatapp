@@ -67,7 +67,7 @@ const SignIn = () => {
         <React.Fragment>
             <Helmet title="Signin"/>
             <SigninAuthContainer>
-                <div><p>Want to have a chat with Alex? Sign in </p></div>
+                <div><p>Want to have a chat with AI? Sign in </p></div>
                 <Alert variant={alartVariant} show={showAlert}>
                     {alartMessage}
                 </Alert>

@@ -35,6 +35,8 @@ const MessageBubble = ({
     const {handleDecryptData} = useEncryptionOperations();
     const senderName = user.email;
     const recipientName = "Artificial Intelligence";
+    // @ts-ignore
+    const SECRET_KEY: string = process.env.REACT_APP_APP_ID;
     const WhichBubble = () => {
         if (commentType === "to") {
             return (
@@ -45,7 +47,7 @@ const MessageBubble = ({
                     <StyledCommentRow>
                         <MessagesBubbleBody><StyledMessageContentSpan>{handleDecryptData({
                             cipherText: content,
-                            secret: process.env.REACT_APP_APP_ID as string
+                            secret: SECRET_KEY
                         })}</StyledMessageContentSpan></MessagesBubbleBody>
                     </StyledCommentRow>
                     <MessagesBubbleFooter>
@@ -62,7 +64,7 @@ const MessageBubble = ({
                     <StyledCommentRow>
                         <MessagesBubbleBodyII><StyledMessageContentSpan>{handleDecryptData({
                             cipherText: content,
-                            secret: process.env.REACT_APP_APP_ID as string
+                            secret: SECRET_KEY
                         })}</StyledMessageContentSpan></MessagesBubbleBodyII>
                     </StyledCommentRow>
                     <MessagesBubbleFooter>
