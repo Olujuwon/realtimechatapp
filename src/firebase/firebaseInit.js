@@ -6,7 +6,6 @@ import {getAuth, connectAuthEmulator} from 'firebase/auth';
 const FirebaseInit = (function () {
     let instance;
     const env = process.env.REACT_APP_ENVIRONMENT;
-    console.log("Which env", env);
     function createInstance() {
         const firebaseConfigs = {
             apiKey: process.env.REACT_APP_API_KEY,
@@ -35,7 +34,6 @@ const FirebaseInit = (function () {
 
     return {
         getInstance: function () {
-            console.log("Hello02");
             if (!instance) {
                 instance = createInstance();
             }
