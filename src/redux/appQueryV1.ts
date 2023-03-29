@@ -49,7 +49,6 @@ export const messagingAppApi = createApi({
             async queryFn(messageToSend) {
                 try {
                     const messagesCollectionRef = collection(firebaseInstance.database, "messages");
-                    console.log("Encryption secret", process.env.REACT_APP_APP_ID);
                     messageToSend.data = cryptoJs.AES.encrypt(JSON.stringify(messageToSend.data), "1:176244274562:web:68f9c5e3038fb92e26cb9b").toString();
                     await setDoc(doc(messagesCollectionRef, messageToSend.uid), messageToSend);
                     return {newMessage: messageToSend};
