@@ -1,19 +1,15 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useRef} from 'react';
+
 import MessageBubble from "./MessageBubble";
-import {
-    EmptyDiv,
-    MessageBodyWrapper,
-    MessagesBodyRow,
-    MessagesContainer
-} from "./Message.Styles";
-import moment from "moment";
-import {messageType} from "../../types/Message/message";
+import {EmptyDiv, MessageBodyWrapper, MessagesContainer} from "./Message.Styles";
+
 import {_sortMessagesArray} from "./util";
-import {useAppSelector} from "../../hooks/reduxHooks";
-import {userType} from "../../types/User/user";
+
 import useGetmessagesAndListenForNewMessages
     from "../../hooks/useGetmessagesAndListenForNewMessages"
-import InfiniteScroll from 'react-infinite-scroll-component';
+
+import {messageType} from "../../types/Message/message";
+import {userType} from "../../types/User/user";
 
 type IComponentProps = {
     user: userType
@@ -21,6 +17,16 @@ type IComponentProps = {
 const MessageComponentBody: React.FC<IComponentProps> = ({user}): JSX.Element => {
     const {sentMessages, receivedMessages} = useGetmessagesAndListenForNewMessages(user);
     const preProcessedMessages = _sortMessagesArray([...sentMessages, ...receivedMessages]);
+    const scrollToBottomContainerRef = useRef(null);
+    const scrollToBottom = () => {
+        // @ts-ignore
+        scrollToBottomContainerRef.current?.scrollIntoView({behavior: "smooth"})
+    }
+
+    useEffect(() => {
+        scrollToBottom()
+    }, [sentMessages, receivedMessages])
+
     /*Note: Testing InfiniteScroll component here*/
     return (
         <MessageBodyWrapper
@@ -43,12 +49,14 @@ const MessageComponentBody: React.FC<IComponentProps> = ({user}): JSX.Element =>
                         return (
                             <MessagesContainer key={index + "_container_row_"}>
                                 <MessageBubble commentType={commentTypeValue} content={data}
-                                               key={"__bubble__" + index} messagesTime={message.timeStamp}
+                                               key={"__bubble__" + index}
+                                               messagesTime={message.timeStamp}
                                                sender={sender[0]} user={user}/>
                             </MessagesContainer>
                         );
                     }) : <EmptyDiv></EmptyDiv>
             }
+            <div ref={scrollToBottomContainerRef}/>
         </MessageBodyWrapper>
     );
 }

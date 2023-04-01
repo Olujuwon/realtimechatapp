@@ -3,13 +3,9 @@ import {
     collection,
     setDoc,
     doc,
-    getDoc,
     query,
     getDocs,
     where,
-    addDoc,
-    updateDoc,
-    arrayUnion,
     onSnapshot
 } from "firebase/firestore";
 import FirebaseInit from "../firebase/firebaseInit";
@@ -18,10 +14,9 @@ import {userType} from "../types/User/user";
 import {
     signInWithEmailAndPassword,
     createUserWithEmailAndPassword,
-    onAuthStateChanged,
-    getAuth
 } from "firebase/auth";
 import * as cryptoJs from 'crypto-js';
+
 const firebaseInstance = FirebaseInit.getInstance();
 
 export default interface userSigninType {
@@ -38,7 +33,6 @@ export default interface userSignupType {
 }
 
 // @ts-ignore
-// @ts-ignore
 export const messagingAppApi = createApi({
     reducerPath: "messagingApi",
     baseQuery: fakeBaseQuery(),
@@ -49,11 +43,10 @@ export const messagingAppApi = createApi({
             async queryFn(messageToSend) {
                 try {
                     const messagesCollectionRef = collection(firebaseInstance.database, "messages");
-                    messageToSend.data = cryptoJs.AES.encrypt(JSON.stringify(messageToSend.data), "1:176244274562:web:68f9c5e3038fb92e26cb9b").toString();
+                    messageToSend.data = cryptoJs.AES.encrypt(JSON.stringify(messageToSend.data), process.env.REACT_APP_APP_ID as string).toString();
                     await setDoc(doc(messagesCollectionRef, messageToSend.uid), messageToSend);
                     return {newMessage: messageToSend};
                 } catch (e: any) {
-                    console.error(e.message);
                     return {error: e.message}
                 }
             }, invalidatesTags: ["message"]
@@ -69,7 +62,6 @@ export const messagingAppApi = createApi({
                     const messagesToUse = messagesArray.filter((message: messageType) => (message.sender[0] === activeContact.uid) || (message.receiver[0] === activeContact.uid));
                     return {data: messagesToUse};
                 } catch (e: any) {
-                    console.error(e.message);
                     return {error: e.message}
                 }
             }, providesTags: ["message"]
@@ -82,7 +74,6 @@ export const messagingAppApi = createApi({
                     const user = await signInWithEmailAndPassword(firebaseInstance.auth, email, password);
                     return {data: user.user};
                 } catch (e: any) {
-                    console.log(e.message);
                     return {error: e.message}
                 }
             },
@@ -95,10 +86,9 @@ export const messagingAppApi = createApi({
                 delete userDetails.password;
                 console.log("From Query signup", userDetails)
                 try {
-                    const user = await createUserWithEmailAndPassword(firebaseInstance.auth, email, password);
+                    await createUserWithEmailAndPassword(firebaseInstance.auth, email, password);
                     return {data: "New user registered successfully"};
                 } catch (e: any) {
-                    console.error("Trying to create new user", e.message);
                     return {error: e.message}
                 }
             },
@@ -107,7 +97,6 @@ export const messagingAppApi = createApi({
         listenForNewMessages: build.mutation({
             // @ts-ignore
             async queryFn(user: userType) {
-                console.log("Latest messages01", user)
                 const collectionRef = collection(firebaseInstance.database, "messages");
                 const q = query(collectionRef, where("sender", "array-contains", user.uid));
                 const q2 = query(collectionRef, where("receiver", "array-contains", user.uid));
@@ -125,30 +114,11 @@ export const messagingAppApi = createApi({
                             latestMessages.push(message.data() as messageType)
                         })
                     });
-                    console.log("Latest messages", latestMessages)
                 } catch (e: any) {
-                    console.log(e.message);
                     return {error: e.message}
                 }
             },
-            invalidatesTags: ["message"],
-            async onCacheEntryAdded(arg, {
-                dispatch,
-                getState,
-                extra,
-                requestId,
-                cacheEntryRemoved,
-                cacheDataLoaded,
-                getCacheEntry,
-            }) {
-                try {
-                    await cacheDataLoaded;
-                    console.log("State of Redux", getState())
-
-                } catch (e: any) {
-                    console.log(e.message);
-                }
-            },
+            invalidatesTags: ["message"]
         }),
     })
 });

@@ -6,6 +6,10 @@
     height: 100vh;
 }
 
+.firebase-emulator-warning{
+    display: none;
+}
+
 
 @media only screen and (max-width: 1200px) {
     .container-fluid {

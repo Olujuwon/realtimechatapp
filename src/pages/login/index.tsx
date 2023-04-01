@@ -1,15 +1,14 @@
 import React, {useState} from 'react';
 import {Helmet} from "react-helmet-async";
 
-import {Row, Col, Card, FloatingLabel, Form, Button, Alert} from "react-bootstrap";
+import { Alert} from "react-bootstrap";
 import {SigninAuthContainer} from "./Signin.Styles";
 import AppFormComponent, {IFormDataProps} from '../../components/Form';
 
-import userSigninType, {useSigninUserMutation} from "../../redux/appQueryV1";
+import userSigninType from "../../redux/appQueryV1";
 import useManageAuthUser from "../../hooks/useManageAuthUser";
 
 import {Link, useNavigate} from "react-router-dom";
-import Cookies from 'js-cookie';
 
 const SIGN_IN_FORM_DATA: Array<IFormDataProps> = [
     {
@@ -18,6 +17,7 @@ const SIGN_IN_FORM_DATA: Array<IFormDataProps> = [
         infoText: "",
         type: "email",
         placeholder: "",
+        required: true,
     },
     {
         name: "password",
@@ -25,10 +25,11 @@ const SIGN_IN_FORM_DATA: Array<IFormDataProps> = [
         infoText: "",
         type: "password",
         placeholder: "",
+        required: true,
     }
 ]
 const SignIn = () => {
-    const {handleSigninUser, authenticatedUser} = useManageAuthUser();
+    const {handleSigninUser} = useManageAuthUser();
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [submitButtonDisabled, setSubmitButtonDisabled] = useState<boolean>(true);

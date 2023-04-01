@@ -1,18 +1,14 @@
 import React from 'react';
-import styled from "styled-components";
-import moment from "moment";
-import {
-    Card,
-    Col,
-    Row,
-} from "react-bootstrap";
-import useEncryptionOperations from "../../hooks/useEncryptionOperations";
-import {userType} from '../../types/User/user';
+
 import {
     MessagesBubbleBody, MessagesBubbleBodyII,
     MessagesBubbleFooter, MessagesBubbleBodyHeader, StyledCommentReceiver, StyledCommentRow,
     StyledCommentSender, StyledMessageContentSpan, StyledMessageTime
 } from './Message.Styles';
+
+import {userType} from '../../types/User/user';
+import moment from "moment";
+import useEncryptionOperations from "../../hooks/useEncryptionOperations";
 
 type IComponentProps = {
     commentType: string,

@@ -48,6 +48,7 @@ const useManageAuthUser = () => {
         try {
             await signOut(auth);
             Cookies.remove("real-time-chat-user-v1");
+            window.location.replace("/");
         } catch (e) {
             alert("Error signing out!");
         }
@@ -72,7 +73,8 @@ const useManageAuthUser = () => {
     return {
         authenticatedUser: user,
         handleSigninUser,
-        isUserLoggedIn
+        isUserLoggedIn,
+        handleLoggingOffAuthUser
     };
 }
 
