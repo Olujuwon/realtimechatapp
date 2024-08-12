@@ -1,10 +1,11 @@
 import styled from "styled-components";
-import {Button, Form, InputGroup, Row, Col, Card} from 'react-bootstrap';
+import {Button, Form, Row, Col, Card} from 'react-bootstrap';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
 export const MessagingWrapper = styled(Row)`
   margin: 0 auto;
   width: 100%;
+  height: 100vh;
 `;
 
 export const MessagingInfoColumn = styled(Col)`
@@ -38,7 +39,7 @@ export const MessagesIndexFooter = styled(Card.Footer)`
   border: none;
   height: fit-content;
   @media only screen and (max-width: 768px) {
-    padding: 0 0.5rem 0 0.5rem;
+    padding: 0 0.1rem 0 0.1rem;
   }
 `;
 
@@ -47,8 +48,6 @@ export const MessagesHeaderContainer = styled(Row)`
   display: grid;
   grid-template-columns: 1fr 1fr;
   padding-top: 0.5rem;
-  padding-right: 3rem;
-  padding-left: 3rem;
   @media only screen and (max-width: 768px) {
     padding: 1rem 0 0 0;
   }
@@ -71,18 +70,19 @@ export const HeaderProfileContainer = styled.div`
 `;
 export const HeaderProfileImage = styled.img`
   margin: 0 0.2rem 0 0;
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 2.8rem;
+  height: 2.8rem;
   @media only screen and (max-width: 1200px) {
-    width: 2rem;
-    height: 2rem;
+    width: 2.5rem;
+    height: 2.5rem;
     margin: 0;
     padding: 0;
   }
 `;
 export const HeaderProfileEmail = styled.h6`
-  margin: 0 1rem 0 1rem;
+  margin: 0 1.5rem 0 1rem;
   padding: 0.5rem 0 0 0;
+  font-size: 0.9rem;
   @media only screen and (max-width: 750px) {
     display: none;
   }
@@ -134,36 +134,35 @@ export const EmptyDiv = styled.div`
 
 export const InputButtonContainer = styled.div`
   display: grid;
-  grid-template-columns: 90% 10%;
+  grid-template-columns: 95% auto;
   grid-gap: 5px;
   @media only screen and (max-width: 768px) {
-    grid-template-columns: auto auto;
-    grid-gap: 2px;
+    grid-template-columns: 75% auto;
+    grid-gap: 0;
   }
 `;
 
 export const InputContainer = styled.div`
   display: grid;
   grid-template-columns: 10% auto;
-  padding: 0;
-  /*align-items: center;*/
+  padding: 0 0 0.3rem 0;
   height: fit-content;
 `;
 
 export const StyledInput = styled(Form.Control)`
-  width: 99%;
+  width: 100%;
   height: 2.5rem;
   @media only screen and (max-width: 768px) {
-    width: 99%;
+    width: 100%;
   }
 `;
 
 export const SendButton = styled(Button)`
   @media only screen and (max-width: 768px) {
     padding: 0;
-    margin: 0 0 0 0.5rem;
+    margin: 0 0 0 0.1rem;
     height: 2.5rem;
-    width: 4rem;
+    width: 5.3rem;
   }
 `;
 

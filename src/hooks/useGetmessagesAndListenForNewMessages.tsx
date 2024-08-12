@@ -1,4 +1,4 @@
-import {useEffect, useState, useCallback} from "react";
+import {useEffect, useState} from "react";
 
 import {userType} from "../types/User/user";
 import {messageType} from "../types/Message/message";
@@ -6,14 +6,8 @@ import FirebaseInit from "../firebase/firebaseInit";
 
 import {
     collection,
-    setDoc,
-    doc,
     query,
-    getDocs,
     where,
-    addDoc,
-    updateDoc,
-    arrayUnion,
     onSnapshot
 } from "firebase/firestore";
 

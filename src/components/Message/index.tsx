@@ -1,10 +1,8 @@
-import React, {useEffect} from 'react';
-import styled from "styled-components";
+import React from 'react';
 
 import MessageComponentHeader from "./MessageHeader";
 import MessageComponentBody from "./MessageBody";
 import MessageComponentInput from "./MessageInput";
-import {Col, Row, Card} from "react-bootstrap";
 
 import {userType} from '../../types/User/user';
 

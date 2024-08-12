@@ -1,21 +1,25 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 
-import {Button, Form, InputGroup} from 'react-bootstrap';
 import {Smile} from "react-feather";
-import styled from "styled-components";
+import {
+    InputButtonContainer,
+    InputContainer,
+    StyledInput,
+    EmojisButton,
+    SendButton
+} from './Message.Styles';
 
+import {useSendNewMessageMutation} from "../../redux/appQueryV1";
+
+import {uuidGenerator} from '../../utils/uuidGenerator';
 import {userType} from "../../types/User/user";
 import {messageType} from "../../types/Message/message";
-
-import {useAppSelector} from "../../hooks/reduxHooks";
-import {useSendNewMessageMutation} from "../../redux/appQueryV1";
 import messageStatus from "../../utils/messageStatus.json";
-import {InputButtonContainer, InputContainer, StyledInput, EmojisButton,SendButton} from './Message.Styles';
-import { uuidGenerator } from '../../utils/uuidGenerator';
 
 interface IComponentProps {
     user: userType
 }
+
 const MessageComponentInput: React.FC<IComponentProps> = ({user}): JSX.Element => {
     const [message, setMessage] = useState<string>("");
     const [sendNewMessage] = useSendNewMessageMutation();
@@ -51,15 +55,16 @@ const MessageComponentInput: React.FC<IComponentProps> = ({user}): JSX.Element =
     return (
         <>
             <InputContainer>
-                <EmojisButton size="sm" variant="primary" >
-                    <Smile className="feather"/>
+                <EmojisButton size="sm" variant="light">
+                    <Smile className="feather" style={{width: "1rem"}}/>
                 </EmojisButton>
                 <InputButtonContainer>
                     <StyledInput type="text" placeholder="Type your message"
                                  onChange={(event: { target: { value: string; }; }) =>
                                      _handleOnInputChange(event.target.value)} value={message}/>
                     <SendButton variant="primary" onClick={_handleSendMessage}
-                            disabled={message.length === 0}>Send</SendButton>
+                                disabled={message.length === 0}
+                                style={{backgroundColor: "#3A5A40"}}>Send</SendButton>
                 </InputButtonContainer>
             </InputContainer>
         </>

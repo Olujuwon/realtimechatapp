@@ -6,10 +6,7 @@ import AppFormComponent, {IFormDataProps} from '../../components/Form';
 import {Alert} from 'react-bootstrap';
 
 import userSignupType, {useSignupUserMutation} from "../../redux/appQueryV1";
-import {userType} from '../../types/User/user';
-
 import {Link, useNavigate} from "react-router-dom";
-import Cookies from 'js-cookie';
 
 
 const SIGN_UP_FORM_DATA: Array<IFormDataProps> = [
@@ -19,12 +16,14 @@ const SIGN_UP_FORM_DATA: Array<IFormDataProps> = [
         infoText: "",
         type: "email",
         placeholder: "Enter your email address",
+        required: true,
     }, {
         name: "password",
         label: "Password",
         infoText: "",
         type: "password",
         placeholder: "Enter password, min. of 8 characters",
+        required: true,
     },
     {
         name: "repassword",
@@ -32,6 +31,7 @@ const SIGN_UP_FORM_DATA: Array<IFormDataProps> = [
         infoText: "",
         type: "password",
         placeholder: "Repeat password, must match with password",
+        required: true,
     }
 ]
 
@@ -52,25 +52,30 @@ const SignUp = () => {
         const capitalizeInputName = name.charAt(0).toUpperCase() + name.slice(1);
         const setFunc = `set${capitalizeInputName}`;
         eval(setFunc)(value);//perhaps not the best method, it works for now and can be improved later!
-        if (email !== "" && password !== "") {
-            setSubmitButtonDisabled(false);
-        }
     }
     const _handleSubmit = async (event: React.ChangeEvent<HTMLInputElement>) => {
         event.preventDefault();
-        const signUserUp: any = await signupUser({
-            email: email,
-            password: password
-        } as userSignupType);
-        if (signUserUp.data) navigate("/signin")
-        else {
-            const {error} = signUserUp;
+        if (password !== repassword){
+            setAlartMessage("Your passwords do not match.");
             setAlartVariant("danger");
-            setAlartMessage(error);
             setShowAlert(true);
-            setTimeout(() => setShowAlert(false), 5000);
+            setTimeout(()=>setShowAlert(false), 5000);
+        }else{
+            const signUserUp: any = await signupUser({
+                email: email,
+                password: password
+            } as userSignupType);
+            if (signUserUp.data) navigate("/signin")
+            else {
+                const {error} = signUserUp;
+                setAlartVariant("danger");
+                setAlartMessage(error);
+                setShowAlert(true);
+                setTimeout(() => setShowAlert(false), 5000);
+            }
         }
     }
+
     return (
         <React.Fragment>
             <Helmet title="Sign up"/>

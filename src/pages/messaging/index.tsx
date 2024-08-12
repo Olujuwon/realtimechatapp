@@ -1,12 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import styled from "styled-components";
 
 import MessageComponent from "../../components/Message";
 import SideBar from "../../components/Sidebar-info";
-import {
-    Col,
-    Container, Row,
-} from "react-bootstrap";
 import {
     MessagingInfoColumn,
     MessagingMessageColumn,
@@ -22,11 +17,11 @@ function Messaging() {
     const navigate = useNavigate();
     if (!isUserLoggedIn()) navigate("/signin");
     const [user, setUser] = useState(null);
-    
+
     useEffect(() => {
         if (authenticatedUser !== null) setUser(authenticatedUser);
     }, [authenticatedUser]);
-    
+
     return (
         <MessagingWrapper>
             <MessagingInfoColumn sm md lg={2} xl={2} xxl={3}>
